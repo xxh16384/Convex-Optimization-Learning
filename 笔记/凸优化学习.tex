@@ -10,6 +10,9 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+
 % 为图表等浮动体添加更友好的支持
 \usepackage{graphicx}
 \usepackage{float}
@@ -116,34 +119,61 @@ $$ \sum_{i=1}^n (a_i^Tx_i - y_i)^2 + \rho \Vert x \Vert^2 \to \min$$
 \begin{align*}
 \min_{x \in X} \quad &f_0(x) \\
 \text{s.t.} \quad &f_i(x) \leq 0 ,\quad i = 1, \ldots, m \\
-& g_i(x) = 0 \quad i = 1, \ldots, p \\
+& g_i(x) = 0 ,\quad i = 1, \ldots, p \\
 \forall i, \quad & f_i(\theta x + (1 - \theta)x) \leq \theta f_i(x) + (1 - \theta) f_i(x)  \\
 \end{align*}
 也就是$f_i$具有非负的曲率。
 
-事实上求解凸的优化问题是简单的，有诸如内点法、一阶方法（first-order methods）等方法，可以迅速的使用简单的编程工具（使用凸优化领域的特定语言DSLs，以及一种编程语言下的工具例如CVXPY）来解决。
+事实上求解凸的优化问题是简单的，有诸如内点法、一阶方法（first-order methods）等方法，可以迅速的使用简单的编程工具（使用凸优化领域的特定语言DSLs，以及一种编程语言下的工具例如（CVXPY）来解决。
 
 
 
 \section{非线性（且非凸的）优化简介}
 
-除了凸优化以外的优化问题，往往是棘手的。主要有启发式算法求局部解，松弛求解以及转换为凸子问题求全局最优解等解法，这里不详细介绍。
+除了凸优化以外的优化问题，往往是棘手的。主要有启发式算法求局部解（这种解法往往对初值条件和超参数有要求），松弛求解以及转换为凸子问题求全局最优解等解法，这里不详细介绍。
 
 \section{教材大纲}
 
-\section{符号表示}
+本书主要包含三个部分：理论基础、应用和算法
 
-\section{集合运算}
-我们可以对集合进行并集、交集等操作。
-$$
-A \cup B = \{x : x \in A \text{ 或 } x \in B\}
-$$
-\label{eq:union}
+第一部分中主要介绍凸分析和凸优化的基本定义。其中第二章和第三章主要介绍凸集和凸函数，并且介绍一些保持凸性的计算方式，第四章给出一部分凸优化问题的子类，给出一部分问题转化为凸优化问题的方法，包含二阶圆锥规划和半正定规划等，第五章介绍一些重要的凸优化问题的性质，例如拉格朗日对偶性、KKT条件等，并且给出凸优化问题的局部以及全局的灵敏度分析。
+
+第二部分的主要内容是介绍如何在实践中应用凸优化，给出了在概率统计、计算几何以及数据拟合中的各种应用。
+
+第三部分主要给出解决凸优化问题的各种数值计算方法，重点介绍了牛顿法和内点法，然后给出其它少数几种算法。
+
+
+\section{符号表示}
+详见课本p697 不详细介绍了。
 
 % 第二章
 \part{理论基础}
 \chapter{凸集}
 \section{仿射集和凸集}
+\subsection{直线集}
+
+对于$\mathbb{R}^n$中的两点$x_1$和$x_2$，我们可以定义它们的直线集为：
+$$y = \mathcal{L}(x_1, x_2) = \{ \theta x_1 + (1 - \theta)x_2 \mid \theta \in \mathbb{R} \}$$
+也就是所有的$\theta \in \mathbb{R}$对应的点的集合。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \node[label = below right:{$x_1 (\theta = 1)$}] (A) at (0,0) {};
+    \node at (A)[circle,fill,inner sep=1pt]{};
+    \node[label = below right:{$x_2 (\theta = 0)$}] (B) at (3,2) {};
+    \node at (B)[circle,fill,inner sep=1pt]{};
+    \draw[] (A) -- (B);
+    \draw[] ($ (A)!-.5!(B) $) -- ($ (A)!1.5!(B) $);
+    \node[label = above left:{$\theta = 0.5$}] (C) at ($ (A)!.5!(B) $) {};
+    \node at (C)[circle,fill,inner sep=1pt]{};
+    \node[label = above left:{$\theta = 0.75$}] (D) at ($ (A)!.25!(B) $) {};
+    \node at (D)[circle,fill,inner sep=1pt]{};
+    \node[label = above left:{$\theta = 1.25$}] (E) at ($ (A)!-.25!(B) $) {};
+    \node at (E)[circle,fill,inner sep=1pt]{};
+    \end{tikzpicture}
+\end{figure}
+
 \section{重要示例}
 \section{保凸变换}
 \section{广义不等式}
