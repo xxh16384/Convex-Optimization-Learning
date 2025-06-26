@@ -1,0 +1,165 @@
+\documentclass[12pt,a4paper]{book}
+% 使用ctex包以支持中文
+\usepackage{ctex}
+
+% 设置页边距
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+
+% 引入amsmath宏包用于数学环境
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% 为图表等浮动体添加更友好的支持
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{makeidx}
+\makeindex
+% 设置超链接
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+% 自定义页眉页脚
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\leftmark}
+\lhead{\rightmark}
+\rfoot{\thepage}
+
+\begin{document}
+
+% 封面
+\begin{titlepage}
+\centering
+\vspace*{5cm}
+{\Huge 凸优化学习笔记}\\[2cm]
+{\LARGE 陈皞翰 Chen Haohan}\\[2cm]
+{\large 最后修改日期：\today}
+\end{titlepage}
+\let\cleardoublepage\clearpage
+
+% 目录
+\tableofcontents
+
+% 前言
+\chapter*{前言}
+\addcontentsline{toc}{chapter}{前言}
+本篇笔记为本人学习斯坦福大学EE364a课程的记录，内容包括凸优化的基本概念、定理及其证明等，主要是自己学习过程的记录，也希望能对同样学习这门课程的同学有帮助。
+
+参考书籍：Convex Optimization by Stephen Boyd and Lieven Vandenberghe
+
+
+% 正文开始
+\mainmatter
+\part{基础知识}
+\chapter{课程导入}
+本章主要给出数学优化问题的概览，并且着重介绍凸优化的相关知识。在本课程中，我们将会学习如何高效可靠的解决凸优化问题，并且解决一些实例。
+\section{数学优化概述}
+一般数学优化问题的标准形式为：
+\begin{align*}
+\text{minimize（使最小化）} \quad & f_0(x) \\
+\text{subject to（满足）} \quad & f_i(x) \leq 0, \quad i = 1, \ldots, m \\
+& g_i(x) = 0, \quad i = 1, \ldots, p
+\end{align*}
+（这里教材上可能有误，没有等式约束）其中$x$是$\mathbb{R}^n$上的向量，为该优化问题的优化（决策）变量；$f_0$是$\mathbb{R}^n \rightarrow \mathbb{R}$上的函数，为目标函数；$f_i(x)$是$\mathbb{R}^n \rightarrow \mathbb{R}$上的函数，为不等式约束（$b_i$为该不等式的限制）；$g_i(x)$是$\mathbb{R}^n \rightarrow \mathbb{R}$上的函数，为等式约束。
+这个优化问题表达的就是：在满足所有约束的前提下，找到一个$x$使得目标函数$f_0(x)$最小。
+
+如果一个优化问题中的目标函数以及所有不等式约束均为线性的，那么称该问题为线性优化问题。也就是所有$f_i$满足如下条件：$$f_i(\alpha x + \beta y) = \alpha f_i(x) + \beta f_i(y) , \quad i = 0, 1, \ldots, m,\quad \forall \alpha, \beta \in \mathbb{R} ,\quad \forall x, y \in \mathbb{R}^n $$
+
+本课程主要介绍凸优化问题，凸优化问题要求目标函数和所有不等式约束均为凸函数，即：
+$$f_i(\alpha x + \beta y) = \alpha f_i(x) + \beta f_i(y) , \quad i = 0, 1, \ldots, m,\quad \forall \alpha, \beta \in \mathbb{R} ,\quad \forall x, y \in \mathbb{R}^n $$
+可以将凸优化问题看作线性优化问题的推广，是线性规划问题的“松弛”
+
+一般优化问题的求解往往是困难的，在现实情况下只有少量的优化问题可以被简单的精确求解，例如线性优化以及最小二乘问题，现在也有简便的方法和算法来求解凸优化问题。除此之外的优化问题往往需要在求解中进行某些“妥协”，例如使用启发式算法来寻找\textbf{局部}最优解、使用近似算法进行松弛，将问题分解为凸子问题以求\textbf{全局}最优解等等（但是这种方法的时间复杂度会随着问题规模指数级增长）。
+
+\section{最小二乘问题和线性规划简介}
+\subsection{最小二乘问题}
+课件中并没有专门提及最小二乘问题，这里只做简单介绍。最小二乘问题是一类没有约束的优化问题，目前有简便的算法可以对大规模的最小二乘问题进行快速且精确的求解。最小二乘问题的目标函数为$a_i^Tx-b_i$的平方和，形式为：
+\begin{align*}
+\text{minimize} \quad & f_0(x) = \Vert Ax - b \Vert^2  = \sum_{i=1}^m (a_i^Tx - b_i)^2
+\end{align*}
+这里$A$是一个$m \times n$的矩阵，$b$是一个长度为$m$的向量，$x$是一个长度为$n$的向量。
+
+最小二乘问题是一类简单的凸优化问题，目标函数$f_0(x)=\Vert Ax - b \Vert^2$是一个关于$x$的二次函数，自然是凸的。对$x$求导（求梯度）有：
+\begin{align*}
+\nabla f_0(x) &= 2A^T(Ax - b) \\
+\text{令梯度为零} \quad 0&=A^T(Ax - b) \\
+\text{即} \quad A^TAx &= A^Tb
+\end{align*}
+由于目标函数的凸性，其导函数单调，极值点就是最值点，故满足如上方程时目标函数值最小。当且仅当$A$满秩时，该线性方程组有唯一解$x=(A^TA)^{-1}A^Tb$
+
+最小二乘问题有许多实际应用，例如线性拟合等等、控制优化等等。常常有加权形式的最小二乘问题（用于平衡在线性拟合中不同变量方差不齐的问题）：
+$$ \sum_{i=1}^n w_i(a_i^Tx_i - y_i)^2 \to \min$$
+或者带有L2正则化的最小二乘问题（用于防止解向量绝对值过大，例如用于线性回归模型，让解向量更“合理”）：
+$$ \sum_{i=1}^n (a_i^Tx_i - y_i)^2 + \rho \Vert x \Vert^2 \to \min$$
+以上两种最小二乘问题将在第六章和第七章中给出更加详细的解释。
+
+\subsection{线性规划}
+课件中同样没有专门提及，仅作简单介绍。线性规划问题的目标函数和所有不等式约束均为线性的，形式为：
+\begin{align*}
+\min f(x) &= c^Tx \\
+\text{subject to} \quad & Ax \leq b \\
+& x \geq 0
+\end{align*}
+
+同最小二乘问题一样，线性规划问题也没有所谓“解析解”，也就是不能用一个方程给出优化问题的最优解，但是有简单的步骤可以用于求解线性规划问题。例如，对于简单的（只有两个决策变量）线性规划问题，可以使用图解法；对于更复杂的线性规划问题可以采用单纯形法甚至内点法来求解。
+
+\section{凸优化简介}
+
+对于凸优化问题，我们给出同前文等价的定义：
+\begin{align*}
+\min_{x \in X} \quad &f_0(x) \\
+\text{s.t.} \quad &f_i(x) \leq 0 ,\quad i = 1, \ldots, m \\
+& g_i(x) = 0 \quad i = 1, \ldots, p \\
+\forall i, \quad & f_i(\theta x + (1 - \theta)x) \leq \theta f_i(x) + (1 - \theta) f_i(x)  \\
+\end{align*}
+也就是$f_i$具有非负的曲率。
+
+事实上求解凸的优化问题是简单的，有诸如内点法、一阶方法（first-order methods）等方法，可以迅速的使用简单的编程工具（使用凸优化领域的特定语言DSLs，以及一种编程语言下的工具例如CVXPY）来解决。
+
+
+
+\section{非线性（且非凸的）优化简介}
+
+除了凸优化以外的优化问题，往往是棘手的。主要有启发式算法求局部解，松弛求解以及转换为凸子问题求全局最优解等解法，这里不详细介绍。
+
+\section{教材大纲}
+
+\section{符号表示}
+
+\section{集合运算}
+我们可以对集合进行并集、交集等操作。
+$$
+A \cup B = \{x : x \in A \text{ 或 } x \in B\}
+$$
+\label{eq:union}
+
+% 第二章
+\part{理论基础}
+\chapter{凸集}
+\section{仿射集和凸集}
+\section{重要示例}
+\section{保凸变换}
+\section{广义不等式}
+\section{分离？和支撑超平面}
+\section{对偶锥体和广义不等式}
+
+\chapter{凸函数}
+
+\part{应用}
+% 结束正文部分
+
+% 参考文献
+\bibliographystyle{plain}
+\bibliography{references}
+
+% 索引
+\printindex
+
+\end{document}
