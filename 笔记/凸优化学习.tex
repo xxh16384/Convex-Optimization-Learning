@@ -35,6 +35,10 @@
 \lhead{\rightmark}
 \rfoot{\thepage}
 
+% 设置目录深度
+\setcounter{secnumdepth}{2} % 编号到 section（即章、节、小节都编号）
+\setcounter{tocdepth}{1}    % 目录只显示到 section 层级
+
 \begin{document}
 
 % 封面
@@ -152,9 +156,9 @@ $$ \sum_{i=1}^n (a_i^Tx_i - y_i)^2 + \rho \Vert x \Vert^2 \to \min$$
 \section{仿射集和凸集}
 \subsection{直线集}
 
-对于$\mathbb{R}^n$中的两点$x_1$和$x_2$，我们可以定义它们的直线集为：
+对于$\mathbb{R}^n$中的两点$x_1$和$x_2$，我们可以定义它们构成的直线集为：
 $$y = \mathcal{L}(x_1, x_2) = \{ \theta x_1 + (1 - \theta)x_2 \mid \theta \in \mathbb{R} \}$$
-也就是所有的$\theta \in \mathbb{R}$对应的点的集合。
+也就是所有的$\theta \in \mathbb{R}$对应的点的集合，也可以认为是$x_1$和$x_2$所在直线上所有点的集合。
 
 \begin{figure}[htbp]
     \centering
@@ -163,7 +167,7 @@ $$y = \mathcal{L}(x_1, x_2) = \{ \theta x_1 + (1 - \theta)x_2 \mid \theta \in \m
     \node at (A)[circle,fill,inner sep=1pt]{};
     \node[label = below right:{$x_2 (\theta = 0)$}] (B) at (3,2) {};
     \node at (B)[circle,fill,inner sep=1pt]{};
-    \draw[] (A) -- (B);
+    \draw[] (A) -- (B) node[midway, below right] {$\mathcal{L}(x_1, x_2)$};
     \draw[] ($ (A)!-.5!(B) $) -- ($ (A)!1.5!(B) $);
     \node[label = above left:{$\theta = 0.5$}] (C) at ($ (A)!.5!(B) $) {};
     \node at (C)[circle,fill,inner sep=1pt]{};
@@ -174,15 +178,197 @@ $$y = \mathcal{L}(x_1, x_2) = \{ \theta x_1 + (1 - \theta)x_2 \mid \theta \in \m
     \end{tikzpicture}
 \end{figure}
 
+如果令上述定义式中的$\theta \in [0,1]$，则称集合为$x_0$到$x_1$之间的线段。
+
+\subsection{仿射集}
+集合$C \subseteq \mathbb{R}^n$是仿射集当且仅当
+$$\forall x_1,x_2 \in C, \exists \theta \in \mathbb{R}, x_0 = \theta x_1 + (1-\theta)x_2 \in C$$
+这意味着仿射集包含其中任意向量的任意线性组合。在这里线性组合可以扩展的定义为$y = \sum_{i=1}^n a_i x_i$，其中$\sum_{i=1}^n a_i = 1$。
+
+例如，线性方程组的解空间是一个仿射集。考虑方程组$Ax = b$，其中有$A\mathbb{R}^{m\times n}$以及$b\in\mathbb{R}^m$，则集合$C=\{x \in \mathbb{R}^n | Ax = b \}$是仿射集，因为对于任意的$x_1,x_2 \in C$，我们有$Ax_1 = b$和$Ax_2 = b$，则对于任意的$\theta \in \mathbb{R}$，有：
+
+$$A(\theta x_1 + (1 - \theta)x_2) = \theta Ax_1 + (1 - \theta)Ax_2 = b$$
+
+一个仿射集的平移仍然是仿射集。例如对一个仿射集$C$，定义其$x_0$平移集合为
+$$V = C + x_0 = \{x-x_0 | x \in C\}$$
+那么$V$仍是仿射集，因为对于任意的$x_1,x_2 \in V$，存在$x_1',x_2' \in C$使得$x_1 = x_1' + x_0$和$x_2 = x_2' + x_0$，则有：
+$$\theta x_1 + (1 - \theta)x_2 = \theta (x_1' + x_0) + (1 - \theta)(x_2' + x_0) = \theta x_1' + (1 - \theta)x_2' + x_0$$
+因此$\theta x_1 + (1 - \theta)x_2 \in V$
+
+
+包含集合$C$中所有仿射组合的最小集合称为$C$的仿射包（affine hull），记为$\text{aff}(C)$。仿射包是一个仿射集，包含集合$C$中的所有点。
+
+集合$C$的仿射维度定义为集合仿射包的维度。例如单位圆周$C = \{x \in \mathbb{R}^2 | \Vert x \Vert = 1\}$的仿射包为$\mathbb{R}^2$（显然圆周上任意不共线的三点的线性组合可以铺满整个二维平面），于是单位圆周的仿射维度为2。
+
+定义集合$C$的内点集为：
+$$\text{relint}(C) = \{x \in C |B(x,r)\cap \text{aff}(C) \subseteq C ,\exists r > 0\}$$
+这里$B(x,r) = \{y| \| y-x \|  \leq r\}$，$\|\cdot\|$是任意范数（也就是距离度量）。
+
+\subsection{凸集}
+
+集合$C \subseteq \mathbb{R}^n$是凸集当且仅当对于任意的$x_1,x_2 \in C$，以及任意的$\theta \in [0,1]$，都有：
+$$\theta x_1 + (1 - \theta)x_2 \in C,\quad \theta \in [0,1]$$
+换句话说，就是集合中的任意点都能直接“看”到其它点。显然，一般仿射集都是凸集（因为其中包含了任意两点之间的线段）。
+
+定义一般集合$C$的凸包为：
+$$\text{conv}(C) = \{x \in \mathbb{R}^n | x = \sum_{i=1}^m \theta_i x_i ,\quad \sum_{i=1}^m \theta_i = 1 ,\quad \theta_i \geq 0 ,\quad x_i \in C\}$$
+凸包是包含集合$C$的最小凸集。凸包的几何意义是将集合$C$中的所有点连接起来，形成一个凸（至少不凹）形状。
+
+以上定义（凸集\&凸包）的有限和等式也可以推广为无限和等式甚至是黎曼积分的形式，只需要保证所有系数项求和结果为1即可。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \filldraw[draw=blue!80,fill=blue!20,thick,rounded corners] (1,1) -- (3,2) -- (5,0)--(1.5,0)--cycle;
+    \filldraw[fill=blue!40,rounded corners] (1,1) -- (3,2) -- (5,0) -- (3,1) -- (1.5,0) --cycle;
+    \node at (2.5,1) {$C$};
+    \node at (3,0.5) {$\text{conv}(C)$};
+    \end{tikzpicture}
+\end{figure}
+
+\subsection{锥体}
+集合$C$是锥体（或称为非负齐次的）当且仅当对于任意的$x \in C$和任意的$\theta \geq 0$，都有$\theta x \in C$。也就是锥体中的任意点都可以被任意放大或缩小（只要缩小不为负数）。
+
+集合$C$是凸锥体当且仅当它是锥体并且是凸集。也就是对于任意的$x_1,x_2 \in C$以及任意的$\theta_1,\theta_2 \geq 0$，都有：
+$$\theta_1 x_1 + \theta_2 x_2 \in C$$
+
+集合$C$的锥包定义为其中所有元素的“锥”组合，即$$\{\sum_{i=1}^k\theta_i x_i |x_c\in C ,\theta_i\geq 0\}$$
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \filldraw[dashed,thin,draw=blue!80,fill=blue!20] (0,0)--(4,4)--(6,4)--(6,0) --cycle;
+    \filldraw[draw=gray!80,fill=gray!20,thick,rounded corners] (1,1) -- (3,2) -- (5,0)--(1.5,0)--cycle;
+    \filldraw[fill=gray!40,rounded corners] (1,1) -- (3,2) -- (5,0) -- (3,1) -- (1.5,0) --cycle;
+    \draw[] (0,0) -- (4,4);
+    \draw[] (0,0) -- (6,0);
+    \node at (2.5,1) {$C$};
+    \node at (3,0.5) {$\text{conv}(C)$};
+    \node at (4,3) {$\text{锥包}(C)$};
+    \node[below left] at (0,0) {$O$};
+    \end{tikzpicture}
+\end{figure}
+
 \section{重要示例}
+\subsection{简单凸集示例}
+\begin{itemize}
+    \item 空集$\emptyset$、单点集$\{x_0\}$、实空间$\mathbb{R}^n$
+    \item 任何直线都是仿射集（也就是凸集），如果线段经过原点，则其还是凸锥
+    \item 线段是凸集，但是不是仿射集
+    \item 射线是凸集，如果其端点为原点则其还是凸锥
+    \item 任意子空间都是仿射的，并且是凸锥
+\end{itemize}
+\subsection{超平面和半空间}
+超平面是一个$n-1$维的仿射集，可以用一个线性方程来定义：
+$$\{x \in \mathbb{R}^n | a^Tx = b\}$$
+其中$a \in \mathbb{R}^n$，$b \in \mathbb{R}$。以上定义式可以移项获得另一种定义式：
+$$\{x \in \mathbb{R}^n | a^T(x - x_0) = 0\}$$
+其中$x_0$是超平面上任意一点，$a$是超平面的法向量（也就是垂直于超平面上所有向量的向量）。该定义式标明超平面由过$x_0$点的所有垂直于$a$的向量构成。
+
+超平面将空间分为两部分，分别称为半空间。半空间是一个$n$维的凸集，可以给出一个（闭的）半空间的定义：
+$$\{x \in \mathbb{R}^n | a^Tx \leq b\}$$
+参考超平面的另一定义式，可以给出半空间的另一种定义式：
+$$\{x \in \mathbb{R}^n | a^T(x-x_0) \leq 0\}$$
+这个定义式代表的半空间是由所有与超平面法向量$a$夹角大于$90^\circ$的向量所组成的集合，也就是在超平面的“背面”上。
+
+显然超平面是一个仿射集，并且是一个\textbf{凸集}，其维度为$n-1$。半空间也是一个凸集，其维度为$n$。
+
+\subsection{欧式球和椭球}
+
+定义欧氏空间中的范数$\|\cdot\| : \|x\| = \sqrt{x^Tx}$。则在$\mathbb{R}^n$中欧式度量下的球体定义为
+$$B(x_c,r)=\{x|\|x-x_c\|\leq r\} = \{x|(x-x_c)^T(x-x_c)\leq r^2\}$$
+欧式球也有等价表述：
+$$B(x_c,r)=\{x_c+ru|\|u\|\leq 1,u\in \mathbb{R}^n\}$$
+
+欧式球是\textbf{凸集}，因为对于任意的$x_1,x_2 \in B(x_c,r)$以及任意的$\theta \in [0,1]$，都有：
+\begin{align*}
+\| (\theta x_1 + (1 - \theta)x_2) - x_c \| &= \| \theta (x_1 - x_c) + (1 - \theta)(x_2 - x_c) \| \\
+&\leq \theta \| x_1 - x_c \| + (1 - \theta)\| x_2 - x_c \| \\
+&\leq \theta r + (1 - \theta)r = r
+\end{align*}
+
+从欧式球可以推广出椭球的概念。椭球是一个$n$维的\textbf{凸集}，可以用一个二次型来定义：
+$$E(x_c, A) = \{x \in \mathbb{R}^n | (x - x_c)^TA(x - x_c) \leq 1\}$$
+其中$A$是一个对称正定矩阵，$x_c$是椭球的中心。（正定矩阵的定义是：对于任意的$x \in \mathbb{R}^n$，都有$x^TAx > 0$，并且$A$的特征值均为正数，对称即$P=P^T$）
+也可以写为
+$$\mathcal{E} = \{x_c+Au|\|u\|\leq 1\}$$
+其中$A$是一个非奇异的方阵。
+
+\subsection{范数球和范数锥}
+
+对于$\mathbb{R}^n$中的任意范数$\|\cdot\|$，可以定义其范数球为：
+$$B(x_c,r) = \{x \in \mathbb{R}^n| \|x-x_c\|\leq r\}$$
+范数锥为
+$$C=\{(x,t)\in \mathbb{R}^n \times \mathbb{R}|\|x\|\leq t\}\subseteq \mathbb{R}^{n+1}$$
+显然以上二者都是\textbf{凸集}。
+
+那么就有人要问了，老师老师，为什么这个锥它要多一个维度呢？其实原教材没有专门标注$(x,t)\in \mathbb{R}^n \times \mathbb{R}$，这里我写出来就是表达范数锥比原空间多了一个“高度”维度，分别在每个高度上的所有满足$\|x\|\leq t$的点构成整个锥体，可以想象锥体是不同高度的“层”拼接所得。例如二维向量的锥体就应该是一个三维图像。
+
+特别的，定义欧式范数下的锥体，二阶锥体（Second-Order Cone，SOC）为：
+$$\mathcal{Q} = \{(x,t) \in \mathbb{R}^{n+1} | (\sum_{i=1}^n x_i^2)^{\frac{1}{2}}\leq t\}$$
+它被叫做二阶锥是因为它是由二次式定义而成的。
+
+\subsection{多面体}
+
+多面体可以定义为
+$$\mathcal{P} = \{x|a_i^Tx\leq b_i, i=1,2,\ldots,m \text{且} c_j^Tx=d_j, j=1,2,\ldots,p \}$$
+这个定义式标明多面体定义为$m$个半空间以及$p$个超平面的交集。直观上可以感受到，由若干个超平面围成的多面体是一个\textbf{凸集}。
+
+定义式中半空间对应的超平面可以视作二维图形的“边”或者三维图形的“面”；其中的超平面（也就是等式条件）可以视作二维图形中的“截线”或者三维图形的“截面”。显然，线性无关的等式条件越多，最后得出的多面体的维度就越低。
+
+例如在二维空间中，两个线性无关的等式条件（超平面）确定的多面体就只有一个点，三维空间中两个超平面加上一个半空间确定的多面体是一个线段或者一条射线。
+
+\textbf{单纯形}是一类特殊的多面体，由$k+1$个仿射无关的点（也就是$k$个向量$v_1-v_0,\ldots,v_k-v_0$之间线性无关）定义。单纯形$C$的定义为：
+$$C = \text{conv}\{v_0,v_1,\ldots,v_k\}$$
+
+\subsection{半正定锥}
+
+我们使用$S^n$来表示所有$n\times n$的对称矩阵的集合（这是一个$n(n+1)/2$维的向量空间），即
+$$S^n=\{X\in\mathbb{R}^{n\times n}|X=X^T \}$$
+定义半正定矩阵（对于任意的$x\in\mathbb{R}^n$，都有$x^TXx\geq 0$）
+$$S^n_+ = \{X\in S^n|X\succeq 0\}$$
+定义正定矩阵（对于任意的$x\in\mathbb{R}^n$，都有$x^TXx> 0$）$$S^n_{++} = \{X\in S^n|X\succ 0\}$$
+
+以上定义式中，$\succeq$和$\succ$分别表示矩阵中的每个元素大于等于/大于0。这个符号表示偏序关系，具体定义将在后面“广义不等式”节中给出。
+
 \section{保凸变换}
+\subsection{交集}
+
+凸集族在任意交运算下保持凸性（即使是无限的可列交乃至不可数交）。最简单的凸集交的例子是不同多面体的交，事实上多面体本身就是用多个半空间以及超平面的交定义的，在此基础上再加上更多半空间以及超平面的限制，最后得到的仍然是一个多面体（最严格的情况下得到$\emptyset$），仍然是凸集。
+
+这一性质可以简单的理解，凸集中的所有元素都应当满足凸集成立的条件$\forall x_1,x_2 \in C,\quad\theta x_1 + (1 - \theta)x_2 \in C,\quad \theta \in [0,1]$，不同的凸集中的点都满足这个条件，许多凸集的交集中的点会满足每个凸集的限制，那么自然在这个交集中的点会满足凸集的要求。
+
+相应的，并运算却不一定能保证凸性，例如说两个不同的单点集的并，是一个仅仅含有两个点的集合，显然不是凸集。这是因为并集中的点可能不满足其中某个集合的凸集要求，进而不满足整个集合的凸集要求。
+
+\subsection{仿射变换}
+
+凸集在仿射变换下仍然是凸集。仿射变换$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x)=Ax+b$，其中$A\in\mathbb{R}^{m \times n}$和$b\in\mathbb{R}^m$。此时凸集$S$的象$f(S) = \{f(x)|x\in S\}$仍然是凸集，类似的，凸集$S$的逆象$f^{-1}(S) = \{x|f(x)\in S\}$仍然是凸集。
+
+几个仿射变换简单的例子，经过以下变换后的结果集仍然为凸集。
+
+\begin{itemize}
+    \item 缩放变换（$\alpha S = \{\alpha x | x\in S\}$）
+    \item 平移变换（$ S + a = \{x+a | x\in S\}$）
+    \item 投影变换（$T=\{x_1\in\mathbb{R}^m | (x_1,x_2)\in S \subseteq \mathbb{R}^{m\times n},\text{其中}x_2\in \mathbb{R}^n\}$）
+    \item 加和变换（$S_1+S_2= \{x_1+x_2 | x_1\in S_1,x_2\in S_2\}$）
+    \item 笛卡尔积（$S_1 \times S_2= \{(x_1,x_2) | x_1\in S_1,x_2\in S_2\}$）
+    \item 部分和（$S= \{(x_1+x_2,y )| (x_1,y)\in S_1,(x_2,y)\in S_2\}$）
+\end{itemize}
+
+
+
 \section{广义不等式}
 \section{分离？和支撑超平面}
 \section{对偶锥体和广义不等式}
 
 \chapter{凸函数}
+\chapter{凸优化问题}
+\chapter{对偶性}
 
 \part{应用}
+\chapter{近似和拟合}
+\chapter{统计估计}
+\chapter{几何问题}
 % 结束正文部分
 
 % 参考文献

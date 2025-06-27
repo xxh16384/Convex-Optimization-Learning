@@ -1,4 +1,4 @@
-\contentsline {chapter}{前言}{3}{chapter*.2}%
+\contentsline {chapter}{前言}{4}{chapter*.2}%
 \contentsline {part}{I\hspace {1em}基础知识}{1}{part.1}%
 \contentsline {chapter}{\numberline {1}课程导入}{3}{chapter.1}%
 \contentsline {section}{\numberline {1.1}数学优化概述}{3}{section.1.1}%
@@ -13,10 +13,26 @@
 \contentsline {chapter}{\numberline {2}凸集}{9}{chapter.2}%
 \contentsline {section}{\numberline {2.1}仿射集和凸集}{9}{section.2.1}%
 \contentsline {subsection}{\numberline {2.1.1}直线集}{9}{subsection.2.1.1}%
-\contentsline {section}{\numberline {2.2}重要示例}{9}{section.2.2}%
-\contentsline {section}{\numberline {2.3}保凸变换}{9}{section.2.3}%
-\contentsline {section}{\numberline {2.4}广义不等式}{9}{section.2.4}%
-\contentsline {section}{\numberline {2.5}分离？和支撑超平面}{9}{section.2.5}%
-\contentsline {section}{\numberline {2.6}对偶锥体和广义不等式}{9}{section.2.6}%
-\contentsline {chapter}{\numberline {3}凸函数}{10}{chapter.3}%
-\contentsline {part}{III\hspace {1em}应用}{11}{part.3}%
+\contentsline {subsection}{\numberline {2.1.2}仿射集}{9}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}凸集}{10}{subsection.2.1.3}%
+\contentsline {subsection}{\numberline {2.1.4}锥体}{11}{subsection.2.1.4}%
+\contentsline {section}{\numberline {2.2}重要示例}{11}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}简单凸集示例}{11}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}超平面和半空间}{12}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}欧式球和椭球}{12}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}范数球和范数锥}{13}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}多面体}{13}{subsection.2.2.5}%
+\contentsline {subsection}{\numberline {2.2.6}半正定锥}{14}{subsection.2.2.6}%
+\contentsline {section}{\numberline {2.3}保凸变换}{14}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}交集}{14}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}仿射变换}{14}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}广义不等式}{15}{section.2.4}%
+\contentsline {section}{\numberline {2.5}分离？和支撑超平面}{15}{section.2.5}%
+\contentsline {section}{\numberline {2.6}对偶锥体和广义不等式}{15}{section.2.6}%
+\contentsline {chapter}{\numberline {3}凸函数}{16}{chapter.3}%
+\contentsline {chapter}{\numberline {4}凸优化问题}{17}{chapter.4}%
+\contentsline {chapter}{\numberline {5}对偶性}{18}{chapter.5}%
+\contentsline {part}{III\hspace {1em}应用}{19}{part.3}%
+\contentsline {chapter}{\numberline {6}近似和拟合}{21}{chapter.6}%
+\contentsline {chapter}{\numberline {7}统计估计}{22}{chapter.7}%
+\contentsline {chapter}{\numberline {8}几何问题}{23}{chapter.8}%
