@@ -323,15 +323,31 @@ $$C = \text{conv}\{v_0,v_1,\ldots,v_k\}$$
 
 \subsection{半正定锥}
 
-我们使用$S^n$来表示所有$n\times n$的对称矩阵的集合（这是一个$n(n+1)/2$维的向量空间），即
-$$S^n=\{X\in\mathbb{R}^{n\times n}|X=X^T \}$$
+我们使用$\mathbb{S}^n$来表示所有$n\times n$的对称矩阵的集合（这是一个$n(n+1)/2$维的向量空间），即
+$$\mathbb{S}^n=\{X\in\mathbb{R}^{n\times n}|X=X^T \}$$
 定义半正定矩阵（对于任意的$x\in\mathbb{R}^n$，都有$x^TXx\geq 0$）
-$$S^n_+ = \{X\in S^n|X\succeq 0\}$$
-定义正定矩阵（对于任意的$x\in\mathbb{R}^n$，都有$x^TXx> 0$）$$S^n_{++} = \{X\in S^n|X\succ 0\}$$
+$$\mathbb{S}^n_+ = \{X\in \mathbb{S}^n|X\succeq 0\}$$
+定义正定矩阵（对于任意的$x\in\mathbb{R}^n$，都有$x^TXx> 0$）$$\mathbb{S}^n_{++} = \{X\in \mathbb{S}^n|X\succ 0\}$$
 
 以上定义式中，$\succeq$和$\succ$分别表示矩阵中的每个元素大于等于/大于0。这个符号表示偏序关系，具体定义将在后面“广义不等式”节中给出。
 
 \section{保凸变换}
+
+怎么判断一个集合是凸的？主要有三种方法
+\begin{enumerate}
+    \item 使用定义判断，即$C$满足$\forall x,y\in C, \alpha\in[0,1], \alpha x+(1-\alpha)y\in C$
+    \item 使用凸函数判断（？）
+    \item 证明$C$是由一个简单凸集（例如多面体，半空间，范数球等）通过保凸变换构成的。
+    \begin{itemize}
+        \item 交集运算
+        \item 仿射映射
+        \item 透视映射
+        \item 线性分式映射（形式上是两个仿射函数的比值）
+    \end{itemize}
+\end{enumerate}
+
+比较之下第二和第三种方法会更加常用，第二种方法会在下一章中给出，本章介绍第三种方法。
+
 \subsection{交集}
 
 凸集族在任意交运算下保持凸性（即使是无限的可列交乃至不可数交）。最简单的凸集交的例子是不同多面体的交，事实上多面体本身就是用多个半空间以及超平面的交定义的，在此基础上再加上更多半空间以及超平面的限制，最后得到的仍然是一个多面体（最严格的情况下得到$\emptyset$），仍然是凸集。
@@ -342,7 +358,9 @@ $$S^n_+ = \{X\in S^n|X\succeq 0\}$$
 
 \subsection{仿射变换}
 
-凸集在仿射变换下仍然是凸集。仿射变换$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x)=Ax+b$，其中$A\in\mathbb{R}^{m \times n}$和$b\in\mathbb{R}^m$。此时凸集$S$的象$f(S) = \{f(x)|x\in S\}$仍然是凸集，类似的，凸集$S$的逆象$f^{-1}(S) = \{x|f(x)\in S\}$仍然是凸集。
+凸集在仿射变换下仍然是凸集。仿射变换
+$$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x)=Ax+b$$
+其中$A\in\mathbb{R}^{m \times n}$和$b\in\mathbb{R}^m$。此时凸集$S$的象$f(S) = \{f(x)|x\in S\}$仍然是凸集，类似的，凸集$S$在仿射变换下的逆象$f^{-1}(S) = \{x|f(x)\in S\}$仍然是凸集。
 
 几个仿射变换简单的例子，经过以下变换后的结果集仍然为凸集。
 
@@ -355,11 +373,137 @@ $$S^n_+ = \{X\in S^n|X\succeq 0\}$$
     \item 部分和（$S= \{(x_1+x_2,y )| (x_1,y)\in S_1,(x_2,y)\in S_2\}$）
 \end{itemize}
 
+接下来给出一些“更有挑战性”的例子。
 
+\begin{enumerate}
+    \item 多面体：对于多面体$\mathcal{P}\{x|Ax\preceq b,Cx=d\}\in\mathbb{R}^{m\times p}$，$\mathcal{P}$可以表示为实空间正部$\mathbb{R}^m_+\times {0}^p$在仿射函数$f(x)=(b-Ax,d-Cx)$下的逆象。这里$m$是多面体不等式约束的数量，$p$是多面体等式约束的个数。如果是这$p$个等式都是线性无关的，那么$\mathcal{P}$就是一个$m$维的图形。
+    
+    $f(x)$是仿射函数，因为它可以写成$f(x)=(b,d) - (Ax,Cx)$，$b,d$分别是$m,p$维的向量，$(b,d)$就是一个$m+p$维的向量，$f(x)$就是线性变换$-(Ax,Cx)$加上常数$(b,d)$的形式，是仿射变换。
 
-\section{广义不等式}
-\section{分离？和支撑超平面}
-\section{对偶锥体和广义不等式}
+    对于逆象集$f^{-1}(\mathbb{R}^m_+\times \{0\}^p)=\{x\in\mathbb{R}^n|f(x)\in\mathbb{R}^m_+\times\{0\}^p\}$，这意味着$f(x)=(b-Ax,d-Cx)\in\mathbb{R}^m_+\times\{0\}^p$，也就是说$b-Ax\in\mathbb{R}^m_+$，$d-Cx\in\{0\}^p$，移项即得$Ax\leq b$和$Cx=d$。由于$\mathbb{R}^m_+\times\{0\}^p$是个凸集，则其在仿射变换下的逆象$\mathcal{p}$也是凸集。
+    \item LMI（线性矩阵不等式）的解集。LMI定义为
+    $$A(x) = x_1A_1+x_2A_2+\ldots+x_nA_n \preceq B$$
+    其中系数$A_i \in \mathbb{S}^m$。
+
+    这里需要注意LMI和普通线性不等式的区别，普通线性不等式是标量不等式，其系数是一个$n\times 1$的向量，而LMI的系数是一系列对称矩阵。普通线性不等式的解集是一个半空间，而LMI的解集是一个凸锥的子集，是所有使得$A(x)$半正定的点的集合，其可能有复杂的曲面边界。
+
+    显然LMI的解集是一个多面体，是一个凸集。事实上，解集还是半正定锥在仿射变换$f:\mathbb{R}^n\to\mathbb{S}^m,\quad f(x)=B-A(x)$的逆象，也就是要求$B-A(x)\in\mathbb{S}^m_+$。
+
+    \item 椭球体$\mathcal{E}=\{x|(x-x_c)^TP^{-1}(x-x_c)\leq 1\}$是单位欧式球$\{u|\|u\|\leq 1\}$在仿射变换$f(u)=P^{\frac{1}{2}}u+x_c$下的像，也是单位球在$g(x)=P^{-\frac{1}{2}}(x-x_c)$下的逆象。
+\end{enumerate}
+
+我们发现凡是用一次不等式组构造出的集合都很容易找到一次变换（仿射变换），使得某个集合（往往是恒非负的某些集合）的逆象是所构造的集合。
+
+\subsection{透视变换}
+
+透视变换定义为
+$$P:\mathbb{R}^n\times\mathbb{R}_{++} \to\mathbb{R}^n,\quad P(x,t)=\frac{x}{t}$$
+透视变换对于不同的$t$会拉出一个“透视体”来，变换后的集合相当于是用超平面$\{x|(0,\ldots,0,t)^Tx=0\}$去截取这个透视体所得到的一个成比例放大或缩小的原集合。凸集经过透视变换后仍然是一个凸集，同样的，凸集经过透视变换的逆变换后仍然是凸集。
+
+例如对于一维点集$\{x_1,x_2,x_3\}$，我们可以用“小孔成像”的原理来理解，画出它的透视体（这里的结果是倒过来的，也就是一个负的透视变换），如下图所示，给出了$t$等于$1.5$时的透视体。
+\begin{figure}[htbp]
+    \begin{center}
+    \begin{tikzpicture}
+    \node[label = above:{$x_1$}] (A) at (-1,1) {};
+    \node at (A)[circle,fill,inner sep=1pt]{};
+    \node[label = above:{$x_2$}] (B) at (0,1) {};
+    \node at (B)[circle,fill,inner sep=1pt]{};
+    \node[label = above:{$x_3$}] (C) at (2,1) {};
+    \node at (C)[circle,fill,inner sep=1pt]{};
+    \draw[very thick] (-3,0) -- (-0.1,0);
+    \draw[very thick] (0.1,0) -- (3,0);
+    \draw[dashed] (A) -- (${-3}*(A)$);
+    \draw[dashed] (B) -- (${-3}*(B)$);
+    \draw[dashed] (C) -- (${-3}*(C)$);
+    \draw[dotted] (-4,-1.5) -- (4,-1.5);
+    \node[label = below right:{$t=1.5$}] () at (4,-1.5) {};
+    \node[label = below:{$x_1'$}] (A') at (${-1.5}*(A)$) {};
+    \node[label = below left:{$x_2'$}] (B') at (${-1.5}*(B)$) {};
+    \node[label = below:{$x_3'$}] (C') at (${-1.5}*(C)$) {};
+    \node at (A')[circle,fill,inner sep=1pt]{};
+    \node at (B')[circle,fill,inner sep=1pt]{};
+    \node at (C')[circle,fill,inner sep=1pt]{};
+
+    \end{tikzpicture}
+    \end{center}
+\end{figure}
+
+\subsection{线性分式变换}
+
+线性分式变换定义为
+$$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x) = \frac{Ax+b}{c^Tx+d},\quad \text{定义域:}\{x|c^Tx+d\geq 0\}$$
+凸集在线性分式变换下的象集或者原象集都是凸集。线性分式变换可以化为透视变换加上仿射变换……
+
+一个小栗子：条件概率函数$f_{ij}=\frac{p_{ij}}{\sum^n_{k=1}p_{kj}}$是线性分式变换。
+
+\section{广义不等式（偏序）}
+
+\subsection{真锥以及偏序}
+
+一个集合$K\subseteq\mathbb{R}^n$如果同时满足以下四个条件，那么它是一个真锥：
+\begin{itemize}
+    \item $K$是一个凸集
+    \item $K$是一个闭集
+    \item $K$的内部非空
+    \item $K$是“尖的”，意味着其中不包含任何直线。
+\end{itemize}
+常见的例子有非负象限$\mathbb{R}^n_+$，半正定矩阵锥$\mathbb{S}^n_+$以及二阶锥（SOC）等等。
+
+通过一个真锥，我们可以唯一的确定一个$\mathbb{R}^n$上的偏序$\preceq$。定义真锥对应的偏序为：
+$$x\preceq_K y \Leftrightarrow y-x \in K$$
+类似的定义严格偏序：
+$$x\prec_K y \Leftrightarrow y-x \in \text{int }K$$
+
+几个简单的偏序的例子：
+\begin{enumerate}
+    \item 向量的分量偏序：真锥$K=\mathbb{R}^n_+$，对$x = (x_1,\ldots,x_n),y=(y_1,\ldots,y_n)$，$x\preceq_K y \Leftrightarrow (x_1,\ldots,x_n) - (y_1,\ldots,y_n) \in K \Leftrightarrow x_i\leq y_i$。
+    \item 矩阵偏序：对于正定矩阵锥（是真锥）$\mathbb{S}^n_+$，其对应的偏序为$x\preceq_K y \Leftrightarrow \text{support}(x)\subseteq \text{support}(y)$，也就是要求两个矩阵$x$和$y$相减所得的矩阵应当是正定的。
+    \item 多项式偏序：由非负多项式锥$K=\{c\in\mathbb{R}^n|\sum_{i=1}^n c_it^{i-1}\geq 0,\forall t \in [0,1]\}$，则两个多项式$c\preceq d \Leftrightarrow \sum_{i=1}^n c_it^{i-1} \leq \sum_{i=1}^n d_it^{i-1},\forall t\in [0,1]$
+\end{enumerate}
+
+\textbf{偏序的性质}
+
+偏序有很多性质和在$\mathbb{R}$上的$\leq$十分相似，例如在加法下偏序保持不变，也就是说对于任意$x,y,u,v$，有$x\preceq y \wedge u\preceq v \Rightarrow  x+u\preceq y+v$
+
+除此之外，偏序有传递性（$x\preceq y \wedge y\preceq z\Rightarrow x\preceq z$），自反性（$x\preceq x$），非负数乘不变性（$\forall \alpha \geq 0, \forall x,y,x\preceq y \Rightarrow \alpha x\preceq \alpha y$），保极限性（对$\{x_i\}$，$x_i\preceq y \Rightarrow \lim x_i\preceq \lim y$）
+和反对称性（$x\preceq y \wedge y\preceq x \Rightarrow x=y$）。
+
+\subsection{最大最小元}
+
+这一部分课件上没有提及，这里简单做介绍。偏序关系和实数上的比较关系有一点不同，实数是有严格顺序的，也就是全序集，任意两个实数都是可以比出大小的，然而一般偏序集却可能没有这种性质，可能存在两个不同的元素但是它们之间无法比较。例如对于一个二元集合$\{a,b\}$的幂集$\{\emptyset,\{a\},\{b\},\{a,b\}\}$，我们定义偏序为“包含关系”，那么我们会发现$\{a\}$和$\{b\}$之间无法比较。因此，偏序关系下最大最小元的存在性会比实数集合上稍稍复杂一些。
+
+我们定义$\prec$下的最大元$x$满足$y\prec x ,\forall y\in S$，类似的定义最小元$x$满足$x\prec y,\forall y\in S$。由于要和所有元素比较，而偏序关系下可能有些集合之间不可比较，所以最大最小元不一定存在。但是如果最大最小元存在，\textbf{那么它们分别都是唯一的}。（我们可以简单的确定最大最小元在某些情况下一定存在，例如有限全序集中一定存在）
+
+\section{分离超平面和支撑超平面}
+
+\subsection{超平面分离定理}
+超平面分离定理：如果两个不相交的凸集都是开集，那么它们之间有一个超平面（并且与二者都不交） or 如果两个不相交的凸集都是闭集并且至少有一个是紧的（任意开覆盖有有限子覆盖，在$\mathbb{R}^n$中意味着有界闭集），那么他们之间有一个超平面（并且与二者都不交）。课本上给出的超平面分离定理是更弱的，大意是是对于两个不交的凸集，一定存在超平面分割它们，使得不存在点在超平面的“对侧”。
+
+\textbf{定理证明大意}
+
+对于闭集的情形，设$A,B$为两个闭集，一定可以找到两个集合间的最近点对$a_0\in A,b_0\in B$使得$\|a_0-b_0\|=d(A,B)> \epsilon > 0$，此时由凸集的最佳逼近定理，对于$\forall x\in A, \quad (b_0-a_0)^T(x-a_0)\leq 0$，这也就是说$A$中的$a_0$到所有点的向量$\overrightarrow{a_0x}$与$\overrightarrow{b_0a_0}$的方向相反（其余所有点都不如$a_0$离$b_0$近，反应了集合的凸性），对于集合$B$中所有点同理有$\forall y\in B, \quad (a_0-b_0)^T(x-b_0)\leq 0$。我们令超平面的法向量$c=(b_0-a_0)$，依据之前最佳逼近定理所得的不等式，容易推知$c^Tx\leq c^T a_0,c^Ty\geq c^T b_0$，于是有$\sup_{x\in A} c^Tx \leq c^Ta_0<c^Tb_0\leq \inf_{y\in B}c^Ty$，可以取得$\gamma = \frac{c^Ta_0+c^Tb_0}{2}$使得$\sup_{x\in A} c^Tx <\gamma< \inf_{y\in B}c^Ty$，也就是存在超平面$c^Tx=\gamma$分离了两个凸集。
+
+\subsection{支撑超平面}
+
+对于一个集合$C\subseteq\mathbb{R}^n$，对于非零向量$a$，如果$a^Tx\leq a^Tx_0$，其中$x_0$是$C$的某一边界点（这里边界点的定义是$C$的闭包差去$C$的内点集），那么超平面$\{x|a^Tx=a^Tx_0\}$称为$C$的支撑超平面。
+
+\textbf{支撑超平面定理}
+
+对于任意非空凸集$C$，对于其任意边界点，都有过该点的支撑超平面。事实上，如果$C$的内点集不为空，可以由$C$的内点集和单点集$\{x_0\}$的超平面分离定理立即得到结果（这里的超平面分离定理指的是课本中叙述的条件更宽松的定理）。
+
+\section{对偶锥和广义不等式}
+
+课件上没说，先不学了……吗？
+
+\subsection{对偶锥}
+对于任意锥体$K$（即使它不是一个凸锥），定义其对偶锥$K^*$为集合$K^*=\{y|x^Ty\geq 0 ,\forall x\in K\}$。$K^*$必定是一个闭且凸的锥。
+
+有一个神奇的性质是$K^{**}$为集合$K$的凸包，也就是$K$的对偶锥的对偶锥是它的凸包。
+
+\subsection{对偶锥体诱导的偏序}
+
+对于真锥$K$，其对偶锥$K^*$也是真锥，也可以诱导一个偏序。这个新的偏序有一条重要的性质：
+$$x\preceq_K y \Leftrightarrow \lambda^T x \leq \lambda^T y,\forall \lambda\preceq_{K^*}$$
 
 \chapter{凸函数}
 \chapter{凸优化问题}
