@@ -12,6 +12,11 @@
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\pagestyle{empty}
 
 % 为图表等浮动体添加更友好的支持
 \usepackage{graphicx}
@@ -506,6 +511,230 @@ $$x\prec_K y \Leftrightarrow y-x \in \text{int }K$$
 $$x\preceq_K y \Leftrightarrow \lambda^T x \leq \lambda^T y,\forall \lambda\preceq_{K^*}$$
 
 \chapter{凸函数}
+
+\section{基本属性和示例}
+
+一个函数是凸函数当且仅当其定义域为\textbf{凸集}且
+$$f(\theta x +(1-\theta)y)\leq \theta f(x) + (1-\theta)f(y),\quad \forall x,y\in D, \theta\in [0,1]$$
+严格凸函数定义为当$x\neq y\land 0<\theta<1$时，上述不等式的不等号严格成立。如果函数$-f$是凸的，那么我们就说$f$是一个凹函数，相应的若$-f$是严格凸的，则$f$是严格凹函数。例如仿射函数总会使得上述不等式中等号成立，于是仿射函数既是凸的又是凹的，然而其既不是严格凸函数也不是严格凹函数。\footnote{注：接下来的讨论中，凹函数总是和凸函数有相似的定义/性质（往往只相差一个符号），一般用凸函数的性质进行简单推导就可以得到凹函数的性质，于是不再单独讨论。}
+
+\subsection{凸函数的一种判定方法}
+
+$f:\mathbb{R}^n\to\mathbb{R}$是凸函数当且仅当$g:\mathbb{R}\to\mathbb{R},\quad g(t)=f(x+tv)$在定义域$\textbf{dom} g=\{t|x+tv\in \textbf{dom} f,\quad \forall x\in \text{dom}f,v\in\mathbb{R}^n\}$上是凸的。这种判断方法的直观理解就是去判断函数$f$图像的“切片”是否是凸的，如果每个切片都是凸的，那么原函数就是凸的。事实上其中$v\in\mathbb{R}^n$就是一个切片的方向，而$t$就决定了要在这个方向上走多远，$x$就是切片的起点
+
+\subsection{凸函数的延拓}
+
+将凸函数的定义域延拓到$\mathbb{R}$，将值域扩展到$\mathbb{R}\cup \{+\infty\} $是一种很方便的延拓方法，具体的操作是令$f(x)=f(x) ,\text{if}\quad x \in \textbf{dom}f ,\quad\text{else} f(x) = +\infty$
+
+这种操作不会改变函数在原定义域内的凸性，同时使函数在$\mathbb{R}$上有定义，且是凸函数。
+
+\subsection{凸函数的一阶条件}
+
+若函数$f$是一阶可微的，也就是它定义域中每点的梯度都存在时，我们给出函数$f$是凸函数的一阶条件（充要条件，可以很方便的从凸函数的定义上证明）：
+$$f(y)\geq f(x)+\nabla f(x)^T(y-x),\forall x,y\in \textbf{dom}f$$
+这意味着$y$处的函数值永远大于以$x$为起始点的一节泰勒近似的函数值。
+
+\textbf{一些方便理解的解释}
+
+零阶泰勒近似的图像可以认为是在“取值维度”上恒等于$f(x)$的一张超平面，也就是与“取值维度”垂直；一阶泰勒近似的图像可以认为是与$f(x)$图像在$x$处相切的超平面（例如一元函数，取值维度一般就是$y$，那零阶近似就是直线$y=f(x)$，一阶近似就是$y=f(x)+f'(x)(y-x)$，对于更多元的函数，就有以上一阶条件中的表示方法）。
+
+于是一阶条件表达的就是：在任意$y$处的函数取值一定大于函数在$x$处的切超平面在$y$处的取值，也就是说函数图像比函数在任意一点处的切超平面都要“高”（这个切平面是全局的最低估计值），那么此时这个函数就是凸的。
+
+\subsection{二阶条件}
+
+若函数$f(x)$是二阶可微的，也就是其定义域内每点的黑塞矩阵或者二阶导数都存在时，给出$f$是凸函数的二阶条件（同样也是充要条件）：
+$$\nabla^2f(x) \succeq 0$$
+这个条件可以通过对一阶条件移项+取极限而轻松得到。
+
+如果$\nabla^2f(x) \succ 0$，则称$f(x)$是严格凸的。
+
+\subsection{常见的凸函数例子}
+
+\begin{itemize}
+    \item 正定/半正定二次型
+    \item 最小二乘的目标函数
+    \item 线性二次函数
+    \item 对数指数和函数（特指函数$f(x) = \log(\sum^n_{k=1}\exp(x))$）
+    \item 几何平均数
+    \item 负熵函数
+    \item 范数
+\end{itemize}
+
+\subsection{下水平集}
+
+函数$f(x)$的$\alpha$下水平集定义为：
+$$C_\alpha = \{x\in\text{dom}f|f(x)\leq\alpha\}$$
+
+显然，一个凸函数的任意下水平集肯定是凸集，而反之则不然，例如$f(x)=-e^x$并非一个凸函数，然而它的下水平集都是凸集。下水平集的定义主要在拟凸函数处会用到。
+
+\subsection{上境图}
+
+函数$f(x)$的上境图（Epigraph）定义为：
+$$\text{epi} f = \{(x,t)|x\in \text{dom}f,f(x)\leq t\}$$
+也就是$f(x)$的图像中大于其函数值的所有点的集合，可以直观的理解为$f(x)$的图像上方的区域。
+
+\subsection{詹森不等式}
+
+事实上我们有时把凸函数定义的不等式，即
+$$f(\theta x +(1-\theta)y)\leq \theta f(x) + (1-\theta)f(y),\quad \forall x,y\in D, \theta\in [0,1]$$
+通过这条基本定义式，我们能推出凸函数的很多不等式性质。例如，当$\theta = \frac{1}{2}$时，有$f(\frac{x+y}{2})\leq \frac{f(x)+f(y)}{2}$；当$\theta\geq 0$时，若$\sum \theta_i = 1$，则有$f(\sum\theta_i x_i)\leq \sum\theta_i f(x_i)\quad \forall x_i\in D$；进一步推广至黎曼积分上，还能得到凸函数期望相关的不等式$f(\mathbf{E} (x))\leq \mathbf{E} (f(x))$。
+
+
+\section{保凸变换}
+
+怎么判断一个函数是凸的？主要有三种方法
+
+\begin{enumerate}
+    \item 通过定义验证（可以使用“切片”的方式进行检验）
+    \item 通过二阶条件来验证（一般用于处理简单的函数）（提问：为什么不常用一阶条件来验证呢？答：解析式好算）
+    \item 构造性验证（证明这个函数可以由数个简单的函数通过保凸变换得到）
+\end{enumerate}
+
+保凸变换主要有以下几种
+\begin{itemize}
+    \item 非负数乘（可以通过定义简单证明）
+    \item 凸函数的和，包括凸函数列的无穷和（这一性质可以通过定义简单证明）
+    \item 凸函数（族）的积分
+    \item 仿射的复合
+    \item 条件相对复杂的一般复合
+    \item 逐点极值（确界）
+\end{itemize}
+
+\subsection{线性操作}
+
+多个凸函数的\textbf{正系数}线性组合所得的函数仍然是凸的。这个性质可以通过定义中的不等式简单得出。对于一个凸函数的正系数$\alpha$数乘而言，有$\alpha f(\theta x +(1-\theta)y)\leq  \theta \alpha f(x) + (1-\theta)\alpha f(y) = \alpha (\theta f(x) + (1-\theta)f(y))$，不等式仍然成立；对于两个或者多个凸函数的和，总有$\sum f_i(\theta x +(1-\theta)y) \leq \sum (\theta f(x) + (1-\theta)f(y))$，于是该性质得证。
+
+\subsection{凸函数与仿射函数的复合}
+
+一个凸函数$f:\mathbb{R}^n\to\mathbb{R}$，将它与一个仿射函数$g:\mathbb{R}^n\to\mathbb{R}$复合，得到$g(x) = f(Ax + b),\quad b\in\mathbb{R}^n,A\in\mathbb{R}^{n\times m}$，此时$g(x)$仍然是一个凸函数，这个性质可以通过复合函数求导以及一阶条件或者二阶条件来验证。
+
+函数与仿射函数的复合，可以从向量空间的角度来理解，无非两种状况：\\1、仿射函数是一个$n$维向量空间中的线性变换，线性变换相当于在不同方向上分别以不同的比例去“拉扯”函数的图像，不会改变图像上点的相对位置关系，自然不会改变函数图像的凹凸性\\2、仿射函数导致函数自变量“降维”，可以认为是在第一种情况的前提下再直接删除几个维度，那也不会改变函数图像的凹凸性。
+
+\subsection{逐点极值or确界}
+
+凸函数列的逐点的极值或者上确界构成的函数仍然是凸函数。例如有凸函数列$f_1,f_2,\ldots,f_n$，那么$g(x) = \max{f_i(x)}\text{（如果最大值存在）},\quad \sup{f_i(x)}$是一个凸函数。这条性质也可以简单的用定义式证明，也很容易图形化的理解。
+
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[
+        axis lines = middle,
+        xlabel = $x$,
+        ylabel = $y$,
+        ymin = -0.5, ymax = 5,
+        xmin = -1, xmax = 3,
+        domain = -0.5:2.5,
+        samples = 100,
+        width=10cm,
+        height=8cm,
+        title = {凸函数族的逐点最大值仍为凸函数}
+    ]
+    
+    % 绘制第一个凸函数 f1(x) = x^2
+    \addplot [
+        blue, 
+        thick,
+        ] {x^2};
+    \addlegendentry{$f_1(x) = x^2$}
+    
+    % 绘制第二个凸函数 f2(x) = (x-1.5)^2 + 0.5
+    \addplot [
+        red, 
+        thick,
+        ] {(x-1.5)^2 + 0.5};
+    \addlegendentry{$f_2(x) = (x-1.5)^2 + 0.5$}
+    
+    % 绘制逐点最大值函数 max{f1(x), f2(x)}
+    \addplot [
+        purple, 
+        thick,
+        densely dashed
+        ] {max(x^2, (x-1.5)^2 + 0.5)};
+    \addlegendentry{$\max\{f_1(x), f_2(x)\}$}
+    
+    % 标记交点
+    \pgfmathsetmacro{\intersection}{(1.5^2 + 0.5)/(2*1.5)}
+    \addplot[mark=*, mark size=2pt] coordinates {(\intersection, {\intersection^2})};
+    \node at (axis cs:\intersection, {\intersection^2+0.5}) [above] {交点};
+    
+    % 验证凸性：绘制弦
+    \def\xA{-0.5}
+    \def\xB{2.5}
+    \addplot[gray, dashed] coordinates {(\xA, {max(\xA^2, (\xA-1.5)^2 + 0.5)}) 
+                                      (\xB, {max(\xB^2, (\xB-1.5)^2 + 0.5)})};
+    \def\xM{1.0}
+    \addplot[mark=*, mark size=2pt, gray] coordinates {(\xM, {max(\xM^2, (\xM-1.5)^2 + 0.5)})};
+    \addplot[mark=*, mark size=2pt, gray] coordinates {(\xM, {(max(\xA^2, (\xA-1.5)^2 + 0.5) + max(\xB^2, (\xB-1.5)^2 + 0.5))/2})};
+    \draw[gray, dotted] (\xM,0) -- (\xM, {max(\xM^2, (\xM-1.5)^2 + 0.5)});
+    
+    % 添加说明
+    \node at (axis cs:1.8, 3.5) [right, purple] {逐点最大值函数};
+    
+    \end{axis}
+\end{tikzpicture}
+\end{figure}
+
+\subsection{部分最小化}
+
+对于一个凸函数$f(x,y),x\in \mathbb{R}^m,y\in \mathbb{R}^n$，在凸集$C\in\mathbb{R}^n$上的部分最小化函数$g(x)=\inf_{y\in C}{f(x,y)}$是一个凸函数。$g(x)$表示在最优的$y$下，$f$的最小可能值，可以类比概率论中的边缘概率或者边缘分布？这个性质同样重要，例如在一些优化问题中（例如鲁棒优化），我们可能会遇到$\min_x(\min_y f(x,y))$这样的问题形式，局部最小的凸性传递就可能让这一目标函数成为凸函数，进而使问题简化。
+
+本节以及上一节中都需要注意“最大值”或者“最小值”不是总一定能取到的，有界集的确界总是存在的，所以叙述时要注意极值的存在性。
+
+\subsection{复合函数}
+
+\textbf{凸函数与标量函数复合}
+
+对于函数$g:\mathbb{R}^n\to\mathbb{R}$和$h:\mathbb{R}\to\mathbb{R}$，令$f(x)=h(g(x))$，则$f$是凸函数$\Longleftrightarrow{凹函数},h\text{凸函数},h\text{是不增的}$。只需要对复合函数进行求导，然后用二阶条件即可验证该性质。
+
+\textbf{一般复合}
+
+对于函数$g:\mathbb{R}^n\to\mathbb{R}^k$以及$h\mathbb{R}^k\to\mathbb{R}$，令$f(x)=h(g(x))=h(g_1(x),g_2(x),...,g_k(x))$，$f\text{是凸函数}\Longleftrightarrow $
+$$(g_i\text{是凸函数}\wedge h\text{在定义域上不减})\vee (g_i\text{是凹函数}\wedge h\text{在定义域上不增})\vee g_i\text{是仿射函数} $$
+
+以上性质可以对复合函数进行求导，然后用二阶条件来验证。
+
+\subsection{透视函数}
+
+若 $f: \mathbb{R}^n \to \mathbb{R}$，则 $f$ 的透视函数（perspective）是函数 $g: \mathbb{R}^{n+1} \to \mathbb{R}$，定义为
+$$g(x, t) = tf\left(\frac{x}{t}\right),$$
+其定义域为
+$$\mathrm{dom}\, g = \left\{(x, t) \,\middle|\, \frac{x}{t} \in \mathrm{dom}\, f,\, t > 0 \right\}.$$
+透视操作保持凸性：若 $f$ 是凸函数，则其透视函数 $g$ 也是凸函数。类似地，若 $f$ 是凹函数，则 $g$ 也是凹函数。
+
+与集合的透视类似，透视函数也可以很图形化的去理解。透视函数也是在函数原有的维度上增加了一个“高度”维度，额外的，透视函数还为函数乘上了一个“进大远小”的系数。
+
+\subsection{构造性凸分析}
+
+该方法通过将复杂函数分解为基本组件并应用已知的凸性规则，实现了对函数凸性的系统化验证，是连接理论凸分析与实际优化应用的重要桥梁。
+
+在使用这种方法时，可以构建一个“解析树”，每一个叶子节点都是最简单的变量或者常量，树的枝表示一个操作，内部节点是一个由子节点上的值经过一定操作组成的函数，依据之前的各种规则，从叶子节点一步步往前推导，得出根节点（也就是最终的函数）的凸性判断。这种方法具有充分性，也是许多凸优化建模工具（如CVX或CVXPY）的核心验证机制。
+
+\section{共轭函数}
+
+*据说是最最重要的基础知识
+
+对于函数$f$，其共轭函数定义为
+$$f^*(y)=\sup_{x\in\text{dom} f}(y^Tx-f(x))$$
+
+共轭函数$f^*$总是凸的（即使$f$不是凸的），这个性质也很好证明。我们可以知道上确界中的函数$g(y)=y^Tx-f(x)$是一个凸函数（事实上他就是一个线性函数，$f(x)$在这里被视作一个常数），那么由逐点上确界的性质，我们可以知道上确界外的函数也是一个凸函数。
+
+共轭函数可以这样理解：上确界中的函数可以理解为过原点的线性函数$g(x) = y^Tx$在$x_0$处取值与函数$f$在$x_0$处的函数值$f(x_0)$的差，也就是二者图像之间（在值域维度上）的垂直距离。也就是说，共轭函数的函数值等于选定一个“斜率”$y$时，原函数最低低于“斜率面”多远的距离，换个说法就是一定斜率的“斜率面”能在完全不超过原函数的情况下从原点“上移”多远。在一维的函数中，“斜率面”就是正比例函数；在二维函数中，“斜率面”是一个过原点的超平面。
+
+再来一句话总结：共轭函数不是描述"在点 $x$ 的函数值"，而是描述"以斜率 $y$ 的“斜率面”能如何支撑 $f$ "
+
+
+
+\section{拟凸函数}
+
+如果一个函数的所有下水平集都是凸的，那么这个函数称为拟凸函数。
+
+拟凸函数有一些性质
+\begin{itemize}
+    \item 修正的詹森不等式：当$f$是一个拟凸函数时$0\leq\theta\leq 1 \implies f(\theta x+(1-\theta)y)\leq\max\{f(x),f(y)\}$
+    \item 一阶条件：具有凸定义域的一阶可微函数$f$是拟凸函数时$\Leftrightarrow (f(y)\leq f(x) \implies \nabla f(x)^T(y-x)\leq 0)$
+    \item 加和仍然是拟凸函数。
+\end{itemize}
+
 \chapter{凸优化问题}
 \chapter{对偶性}
 
