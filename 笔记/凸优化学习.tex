@@ -402,7 +402,9 @@ $$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x)=Ax+b$$
 \subsection{透视变换}
 
 透视变换定义为
-$$P:\mathbb{R}^n\times\mathbb{R}_{++} \to\mathbb{R}^n,\quad P(x,t)=\frac{x}{t}$$
+\begin{equation}
+    P:\mathbb{R}^n\times\mathbb{R}_{++} \to\mathbb{R}^n,\quad P(x,t)=\frac{x}{t}
+\end{equation}
 透视变换对于不同的$t$会拉出一个“透视体”来，变换后的集合相当于是用超平面$\{x|(0,\ldots,0,t)^Tx=0\}$去截取这个透视体所得到的一个成比例放大或缩小的原集合。凸集经过透视变换后仍然是一个凸集，同样的，凸集经过透视变换的逆变换后仍然是凸集。
 
 例如对于一维点集$\{x_1,x_2,x_3\}$，我们可以用“小孔成像”的原理来理解，画出它的透视体（这里的结果是倒过来的，也就是一个负的透视变换），如下图所示，给出了$t$等于$1.5$时的透视体。
@@ -436,7 +438,9 @@ $$P:\mathbb{R}^n\times\mathbb{R}_{++} \to\mathbb{R}^n,\quad P(x,t)=\frac{x}{t}$$
 \subsection{线性分式变换}
 
 线性分式变换定义为
-$$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x) = \frac{Ax+b}{c^Tx+d},\quad \text{定义域:}\{x|c^Tx+d\geq 0\}$$
+\begin{equation}
+    \frac{P(x)}{Q(x)} = \frac{a}{b} + \frac{c}{d} + \frac{e}{f} + \cdots
+\end{equation}
 凸集在线性分式变换下的象集或者原象集都是凸集。线性分式变换可以化为透视变换加上仿射变换……
 
 一个小栗子：条件概率函数$f_{ij}=\frac{p_{ij}}{\sum^n_{k=1}p_{kj}}$是线性分式变换。
@@ -455,9 +459,13 @@ $$f:\mathbb{R}^n\to\mathbb{R}^m,\quad f(x) = \frac{Ax+b}{c^Tx+d},\quad \text{定
 常见的例子有非负象限$\mathbb{R}^n_+$，半正定矩阵锥$\mathbb{S}^n_+$以及二阶锥（SOC）等等。
 
 通过一个真锥，我们可以唯一的确定一个$\mathbb{R}^n$上的偏序$\preceq$。定义真锥对应的偏序为：
-$$x\preceq_K y \Leftrightarrow y-x \in K$$
+\begin{equation}
+    x\preceq_K y \Leftrightarrow x\preceq y \vee x=y
+\end{equation}
 类似的定义严格偏序：
-$$x\prec_K y \Leftrightarrow y-x \in \text{int }K$$
+\begin{equation}
+    x\prec_K y \Leftrightarrow x\preceq_K y \wedge x\neq y
+\end{equation}
 
 几个简单的偏序的例子：
 \begin{enumerate}
@@ -495,6 +503,24 @@ $$x\prec_K y \Leftrightarrow y-x \in \text{int }K$$
 \textbf{支撑超平面定理}
 
 对于任意非空凸集$C$，对于其任意边界点，都有过该点的支撑超平面。事实上，如果$C$的内点集不为空，可以由$C$的内点集和单点集$\{x_0\}$的超平面分离定理立即得到结果（这里的超平面分离定理指的是课本中叙述的条件更宽松的定理）。
+
+\subsection{集合的支撑函数}
+
+这部分只在教材上的例题或练习中出现过，但是仍然十分重要，故这里单开一小节来介绍。
+
+设$C\subseteq\mathbb{R}^n$是一个非空集合，其支撑函数（support function）定义为$h_C(y):\mathbb{R}^n\to\mathbb{R}\cup \{+\infty\}$，其定义为：
+\begin{equation}
+h_C(y)=\inf\{t:y\in C+t\}
+\end{equation}
+直观的解释，支撑函数$h_C(y)$表示在方向$y$上，集合$C$能延伸“多远”；换句话说，支撑函数的值就等于支撑超平面在方向$y$上与原点之间的符号有向距离乘上$\Vert y \Vert $。
+
+支撑函数有一些不错的性质
+\begin{itemize}
+    \item 凸性：不论$C$是否是凸的，$h_C$总是关于$y$的凸函数。
+    \item 正齐次性（线性）：$h_C\alpha (y) = h_C(\alpha y) ,\forall \alpha \geq 0$
+    \item 次可加性：如果$C$是凸集，那么有$h_C(y+z) \leq h_C(y) + h_C(z)$
+    \item 凸集包含的判断：$C\subseteq D\Longleftrightarrow h_D(y) \geq h_C(y)$
+\end{itemize}
 
 \section{对偶锥和广义不等式}
 
@@ -563,14 +589,18 @@ $$\nabla^2f(x) \succeq 0$$
 \subsection{下水平集}
 
 函数$f(x)$的$\alpha$下水平集定义为：
-$$C_\alpha = \{x\in\text{dom}f|f(x)\leq\alpha\}$$
+\begin{equation}
+C_\alpha = \{x\in\text{dom}f|f(x)\leq\alpha\}
+\end{equation}
 
 显然，一个凸函数的任意下水平集肯定是凸集，而反之则不然，例如$f(x)=-e^x$并非一个凸函数，然而它的下水平集都是凸集。下水平集的定义主要在拟凸函数处会用到。
 
 \subsection{上境图}
 
 函数$f(x)$的上境图（Epigraph）定义为：
-$$\text{epi} f = \{(x,t)|x\in \text{dom}f,f(x)\leq t\}$$
+\begin{equation}
+\text{epi} f = \{(x,t)|x\in \text{dom}f,f(x)\leq t\}
+\end{equation}
 也就是$f(x)$的图像中大于其函数值的所有点的集合，可以直观的理解为$f(x)$的图像上方的区域。
 
 \subsection{詹森不等式}
@@ -696,7 +726,10 @@ $$(g_i\text{是凸函数}\wedge h\text{在定义域上不减})\vee (g_i\text{是
 \subsection{透视函数}
 
 若 $f: \mathbb{R}^n \to \mathbb{R}$，则 $f$ 的透视函数（perspective）是函数 $g: \mathbb{R}^{n+1} \to \mathbb{R}$，定义为
-$$g(x, t) = tf\left(\frac{x}{t}\right),$$
+\begin{equation}
+g(x, t) = tf\left(\frac{x}{t}\right).
+\end{equation}
+
 其定义域为
 $$\mathrm{dom}\, g = \left\{(x, t) \,\middle|\, \frac{x}{t} \in \mathrm{dom}\, f,\, t > 0 \right\}.$$
 透视操作保持凸性：若 $f$ 是凸函数，则其透视函数 $g$ 也是凸函数。类似地，若 $f$ 是凹函数，则 $g$ 也是凹函数。
@@ -714,7 +747,9 @@ $$\mathrm{dom}\, g = \left\{(x, t) \,\middle|\, \frac{x}{t} \in \mathrm{dom}\, f
 *据说是最最重要的基础知识
 
 对于函数$f$，其共轭函数定义为
-$$f^*(y)=\sup_{x\in\text{dom} f}(y^Tx-f(x))$$
+\begin{equation}
+f^*(y)=\sup_{x\in\text{dom} f}(y^Tx-f(x))
+\end{equation}
 
 共轭函数$f^*$总是凸的（即使$f$不是凸的），这个性质也很好证明。我们可以知道上确界中的函数$g(y)=y^Tx-f(x)$是一个凸函数（事实上他就是一个线性函数，$f(x)$在这里被视作一个常数），那么由逐点上确界的性质，我们可以知道上确界外的函数也是一个凸函数。
 
@@ -726,7 +761,7 @@ $$f^*(y)=\sup_{x\in\text{dom} f}(y^Tx-f(x))$$
 
 \section{拟凸函数}
 
-如果一个函数的所有下水平集都是凸的，那么这个函数称为拟凸函数。
+如果一个函数的所有下水平集都是凸的，那么这个函数称为拟凸函数。具体描述为：对于下水平集$S_\alpha=\{x\in\text{dom}f|x\leq\alpha\}$，$f$是拟凸函数，当且仅当$S_\alpha\text{是凸的，对于}\forall \alpha\in\mathbb{R}$。
 
 拟凸函数有一些性质
 \begin{itemize}
@@ -736,6 +771,975 @@ $$f^*(y)=\sup_{x\in\text{dom} f}(y^Tx-f(x))$$
 \end{itemize}
 
 \chapter{凸优化问题}
+
+\section{优化问题}
+
+\subsection{基本术语}
+
+一般地，我们用以下形式来表达一个优化问题：
+\begin{equation}
+    \begin{aligned}
+        \min & f_0(x) \\
+        \text{s.t.} & f_i(x)\leq 0 ,i = 1,2,\dots,m\\
+        & h_i(x)=0,i = 1,2,\dots,p
+    \end{aligned}
+    \label{eq:opt_problem}
+\end{equation}
+
+以上~\eqref{eq:opt_problem} 式表示要在满足约束条件$f_i(x)\leq 0$和$h_i(x)=0$的情况下，使得目标函数$f_0(x)$最小。我们称$x$为优化变量，函数$f_0(x)$为目标函数或者代价函数，不等式组$f_i(x)\leq 0$称为不等式约束，$h_i(x)=0$称为等式约束。如果一个优化问题没有约束条件（也就是$m=p=0$），我们称之为无约束的。
+
+所有在两组约束条件（不等式约束和等式约束）的定义域内的点，称为该优化问题的定义域。满足所有约束条件的点称作可行点，否则为不可行点，所有可行点组成该问题的可行域。
+
+优化问题~\eqref{eq:opt_problem}的最优值$p^\star $的定义为
+$$p^\star = \inf\{f_0(x)|f_i(x) \leq 0, i = 1, 2, \ldots, m,h_i(x) = 0, i = 1, 2, \ldots, n\}$$
+我们允许$p^\star$取到正负无穷大。$p^\star=\infty$当且仅当这个问题不可行（也就是可行域为空集），若$\exists \text{可行的}x_0 \quad\text{s.t.} f_0(x_0)=-\infty$，则称优化问题~\eqref{eq:opt_problem}是无下界的（但是并非不可解）。
+
+\textbf{（全局）最优化和局部最优化}
+
+我们说我们解得了~\eqref{eq:opt_problem}得最优解，就是我们找到一个可行域内的$x^\star$，使得$f_0(x^\star)=p^\star$，所有这样的$x^\star$组成的集合，我们称为最优集$X_{\text{OPT}}$。如果一个问题的最优集非空，那么我们就说该问题可解的，并且可以取到最优值。在最优值的基础上，我们可以定义该问题的$\epsilon-$次优值。一个可行点$x$是若满足$f_0(x)\geq p^\star+\epsilon$，则称其为$\epsilon-$次优值。所有$\epsilon-$次优值的集合组成~\eqref{eq:opt_problem}的$\epsilon-$次优集（$\epsilon-$suboptimal set）。
+
+定义局部最优值：当一个$x$满足$\exists R\ge 0$，使得$f_0(x)=\inf\{f_0(z)|f_i(z)\leq 0 ,i=1,2,\cdots,m,\quad h_i(z)=0,i=1,2,\cdots,q,\| z - x \|_2 \le R\}$时，则$x$为局部最优值。换句话说，$x$是一个定义域限制在$x$附近的优化问题的最优解。
+
+事实上，凸优化问题的任意局部最优值都是全局最优值，详细证明见\nameref{subsec:convex-optimization}。
+
+\subsection{问题转化}
+
+本节旨在将一个一般问题（或者说直接由实际问题已知条件推导出的问题）转化为优化问题的标准形式，也就是式~\eqref{eq:opt_problem}。在这里我们引入一个"等效问题"的概念。Boyd等的教材没有给出等效问题的具体数学定义，只是简单的指出：等效问题可以理解为当我们得出一个问题的解时，我们可以立即轻松得出与之等效的另一个问题的解，进一步的，如果两个问题具有相同的最优解集，那么我们认为他们是等效问题。接下来我们的讨论都是在进行等效问题之间的转化。
+
+为什么我们会需要这样的问题转化？事实上一个标准形式的问题能够大大方便我们去解它，包括凸优化求解工具CVX和CVXPY等的使用，都是建立在标准问题的基础上的。
+
+\textbf{最大化问题}
+
+如前文所述，我们的优化问题标准形式是一个最小化问题。遇到最大化问题如：
+\begin{equation}
+    \begin{aligned}
+        \max & f_0(x) \\
+        \text{s.t.} & f_i(x)\leq 0 ,i = 1,2,\dots,m\\
+        & h_i(x)=0,i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+
+我们只需要将目标函数取负，得到一个最小化问题（即将优化目标改为$\min -f_0(x)$），然后求解该最小化问题，得到对应的解，该解即为原最大问题的最优解。
+
+\textbf{变量替换（一一对应的函数复合）}
+
+设有一个一一对应的函数$\phi:\mathbb{R}^n\to\mathbb{R}^n$，定义变量替换后的目标函数和约束函数为
+\begin{align*}
+    \tilde{f}_i(z) &= f_i(\phi(z)), \quad i = 0,1,\dots,m \\
+    \tilde{h}_i(z) &= h_i(\phi(z)), \quad i = 1,2,\dots,p
+\end{align*}
+
+其中$\phi$是定义域覆盖原问题可行域$D$的一一映射（即$\phi(\text{dom} \phi) \supseteq D$）。变换后的问题为：
+\begin{equation}
+    \begin{aligned}
+        \min & \tilde{f}_0(z) \\
+        \text{s.t.} & \tilde{f}_i(z) \leq 0 ,i = 1,2,\dots,m\\
+        & \tilde{h}_i(z) = 0, i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+
+两个问题等价：若$x^*$解决原问题，则$z^* = \phi^{-1}(x^*)$解决变换后问题；反之亦然。变量替换通常用于简化约束结构或目标函数形式。
+
+\textbf{目标函数和约束函数的变换}
+
+设$\psi_0: \mathbb{R} \to \mathbb{R}$是单调递增函数，$\psi_1,\dots,\psi_m: \mathbb{R} \to \mathbb{R}$满足$\psi_i(u) \leq 0$当且仅当$u \leq 0$，$\psi_{m+1},\dots,\psi_{m+p}: \mathbb{R} \to \mathbb{R}$满足$\psi_i(u) = 0$当且仅当$u = 0$。定义变换后的函数：
+\begin{align*}
+    \tilde{f}_i(x) &= \psi_i(f_i(x)), \quad i = 0,1,\dots,m \\
+    \tilde{h}_i(x) &= \psi_{m+i}(h_i(x)), \quad i = 1,2,\dots,p
+\end{align*}
+
+变换后的优化问题与原问题等价。特别地，当所有$\psi_i$为线性函数时，即为简单的缩放变换：
+\begin{equation}
+    \begin{aligned}
+        \min & \alpha_0 f_0(x) \\
+        \text{s.t.} & \alpha_i f_i(x) \leq 0 ,i = 1,2,\dots,m\\
+        & \beta_i h_i(x) = 0, i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+其中$\alpha_i > 0$，$\beta_i \neq 0$。这种变换不改变问题的可行域和最优解，仅缩放目标函数和约束函数。
+
+\textbf{引入松弛变量}
+
+对于不等式约束$f_i(x) \leq 0$，可以引入松弛变量$s_i \geq 0$，将不等式转换为等式约束：
+\begin{equation}
+    f_i(x) + s_i = 0, \quad s_i \geq 0
+\end{equation}
+
+原标准形式问题：
+\begin{equation}
+    \begin{aligned}
+        \min & f_0(x) \\
+        \text{s.t.} & f_i(x) \leq 0 ,i = 1,2,\dots,m\\
+        & h_i(x) = 0, i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+
+可转换为：
+\begin{equation}
+    \begin{aligned}
+        \min & f_0(x) \\
+        \text{s.t.} & f_i(x) + s_i = 0, \quad i = 1,2,\dots,m\\
+        & s_i \geq 0, \quad i = 1,2,\dots,m\\
+        & h_i(x) = 0, i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+其中$s \in \mathbb{R}^m$是非负松弛变量。转换后的问题与原问题等价，但将不等式约束转换为等式约束加非负约束，有时更便于求解。
+
+\textbf{图像形式（Epigraph Form）}
+
+将原问题转换为：
+\begin{equation}
+    \begin{aligned}
+        \min & t \\
+        \text{s.t.} & f_0(x) - t \leq 0 \\
+        & f_i(x) \leq 0, \quad i = 1,2,\dots,m\\
+        & Ax = b
+    \end{aligned}
+\end{equation}
+其中$(x,t)$是新变量。此问题与原问题等价：$(x^*,t^*)$是最优解当且仅当$x^*$是原问题的最优解且$t^* = f_0(x^*)$。图像形式问题的目标函数是线性的，这在某些情况下非常有用，特别是当原目标函数复杂时。
+
+\textbf{分段线性最小化转换为线性规划}
+
+对于分段线性最小化问题：
+\begin{equation}
+    \min \max_{i=1,\dots,m}(a_i^T x + b_i)
+\end{equation}
+
+通过引入辅助变量$t$，可以转换为线性规划问题：
+\begin{equation}
+    \begin{aligned}
+        \min & t \\
+        \text{s.t.} & a_i^T x + b_i \leq t, \quad i = 1,2,\dots,m
+    \end{aligned}
+\end{equation}
+
+这展示了如何将一个看似非线性的优化问题转化为标准线性规划问题。
+
+\textbf{线性分式规划转换}
+
+对于线性分式规划问题：
+\begin{equation}
+    \begin{aligned}
+        \min & \frac{c^T x + d}{e^T x + f} \\
+        \text{s.t.} & e^T x + f > 0 \\
+        & Gx \leq h \\
+        & Ax = b
+    \end{aligned}
+\end{equation}
+
+可通过变量替换$y = x/(e^T x + f)$和$t = 1/(e^T x + f)$，转换为线性规划问题：
+\begin{equation}
+    \begin{aligned}
+        \min & c^T y + dt \\
+        \text{s.t.} & Gy - ht \leq 0 \\
+        & Ay - bt = 0 \\
+        & e^T y + ft = 1 \\
+        & t \geq 0
+    \end{aligned}
+\end{equation}
+
+\textbf{隐式约束表示}
+
+定义扩展值延伸函数：
+\[
+F(x) = \begin{cases}
+f_0(x), & \text{当} \; x \text{可行} \\
+\infty, & \text{当} \; x \text{不可行}
+\end{cases}
+\]
+
+则原问题可表示为无约束问题：$\min F(x)$。此转换保持问题等价性，但只是符号上的技巧，未使问题更容易解决。
+
+\textbf{分离变量与部分极小化}
+
+当约束可分离（每个约束仅依赖$x_1$或$x_2$）时：
+\begin{equation}
+    \begin{aligned}
+        \min & f_0(x_1,x_2) \\
+        \text{s.t.} & f_i(x_1) \leq 0, \quad i = 1,2,\dots,m_1\\
+        & \tilde{f}_i(x_2) \leq 0, \quad i = 1,2,\dots,m_2\\
+        & h_i(x) = 0, \quad i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+
+可先对$x_2$极小化，定义：
+\[
+\tilde{f}_0(x_1) = \inf \{f_0(x_1,z) \mid \tilde{f}_i(z) \leq 0, \; i = 1,2,\dots,m_2 \}
+\]
+
+得到等价问题：
+\begin{equation}
+    \begin{aligned}
+        \min & \tilde{f}_0(x_1) \\
+        \text{s.t.} & f_i(x_1) \leq 0, \quad i = 1,2,\dots,m_1
+    \end{aligned}
+\end{equation}
+
+若$f_0$关于$x_1,x_2$联合凸，且所有约束凸，则等价问题也是凸的。
+
+\textbf{向量优化问题的标量化}
+
+对于向量优化问题：
+\begin{equation}
+    \begin{aligned}
+        \min_{w.r.t. \; K} & f_0(x) \\
+        \text{s.t.} & f_i(x) \leq 0, \quad i = 1,2,\dots,m\\
+        & h_i(x) = 0, \quad i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+其中$f_0: \mathbb{R}^n \to \mathbb{R}^q$是向量值函数，$K$是适当锥。
+
+可通过标量化转换为标量问题：
+\begin{equation}
+    \begin{aligned}
+        \min & \lambda^T f_0(x) \\
+        \text{s.t.} & f_i(x) \leq 0, \quad i = 1,2,\dots,m\\
+        & h_i(x) = 0, \quad i = 1,2,\dots,p
+    \end{aligned}
+\end{equation}
+其中$\lambda \succ_{K^*} 0$（在对偶广义不等式中为正）。任何此类标量化问题的解都是Pareto最优的。
+
+问题转换是凸优化中的核心技巧，通过这些转换，我们可以将各种实际问题重新表述为可有效求解的标准凸优化问题。在实际应用中，选择合适的转换方法对于问题的求解效率和数值稳定性至关重要。
+
+\section{凸优化问题}
+
+\subsection{凸优化问题的标准形式}
+
+凸优化问题的标准形式定义为：
+
+\begin{equation}
+\begin{aligned}
+\text{minimize} \quad & f_0(x) \\
+\text{subject to} \quad & f_i(x) \leq 0, \quad i = 1, \dots, m \\
+& a_i^T x = b_i, \quad i = 1, \dots, p
+\end{aligned}
+\label{eq:convex_opt_standard}
+\end{equation}
+
+其中：
+\begin{itemize}
+    \item $x \in \mathbb{R}^n$ 是优化变量
+    \item 目标函数 $f_0: \mathbb{R}^n \to \mathbb{R}$ 是凸函数
+    \item 不等式约束函数 $f_i: \mathbb{R}^n \to \mathbb{R}$ ($i=1,\dots,m$) 是凸函数
+    \item 等式约束是仿射的（即 $a_i^T x - b_i = 0$）
+    \item 问题的定义域 $D = \bigcap_{i=0}^m \text{dom} f_i$ 非空
+\end{itemize}
+
+\subsection{凸优化问题的基本性质}
+
+\textbf{可行集的凸性}
+凸优化问题的可行
+\[
+\mathcal{C} = \{x \mid f_i(x) \leq 0, i=1,\dots,m, a_i^T x = b_i, i=1,\dots,p\}
+\]
+是凸集。
+
+\begin{itemize}
+    \item 凸函数的下水平集 $\{x \mid f_i(x) \leq 0\}$ 是凸集
+    \item 仿射等式约束定义的集合是凸集
+    \item 凸集的交集仍是凸集
+\end{itemize}
+
+\textbf{局部最优解即全局最优解}
+
+凸优化问题中，任何局部最优解都是全局最优解。
+
+假设 $x^*$ 是局部最优解但不是全局最优解，则存在可行点 $y$ 满足 $f_0(y) < f_0(x^*)$。考虑连接 $x^*$ 和 $y$ 的线段上的点 $x_\theta = \theta y + (1-\theta)x^*$，其中 $\theta \in [0,1]$。由凸性：
+\[
+f_0(x_\theta) \leq \theta f_0(y) + (1-\theta)f_0(x^*) < f_0(x^*)
+\]
+当 $\theta$ 足够小时，$x_\theta$ 位于 $x^*$ 的邻域内，这与 $x^*$ 是局部最优解矛盾。
+
+\textbf{最优集的凸性}
+
+凸优化问题的最优解集合 
+\[
+\mathcal{X}_{\text{opt}} = \{x^* \mid x^* \text{ 是最优解}\}
+\]
+是凸集。
+
+设 $x^*$ 和 $y^*$ 都是最优解，令 $p^* = f_0(x^*) = f_0(y^*)$。对任意 $\theta \in [0,1]$，点 $z = \theta x^* + (1-\theta)y^*$ 是可行的（因为可行集是凸集），且由凸性：
+\[
+f_0(z) \leq \theta f_0(x^*) + (1-\theta)f_0(y^*) = p^*
+\]
+因此 $f_0(z) = p^*$，即 $z$ 也是最优解。
+
+\textbf{严格凸函数的唯一最优解：}
+如果目标函数 $f_0$ 是严格凸的，则凸优化问题最多有一个最优解。
+
+假设存在两个不同的最优解 $x^*$ 和 $y^*$，则对任意 $\theta \in (0,1)$，点 $z = \theta x^* + (1-\theta)y^*$ 满足：
+\[
+f_0(z) < \theta f_0(x^*) + (1-\theta)f_0(y^*) = p^*
+\]
+这与 $p^*$ 是最优值矛盾。
+
+\subsection{凸优化问题的判定}
+
+判断一个优化问题是否为凸优化问题，关键在于验证：
+\begin{itemize}
+    \item 目标函数是否凸
+    \item 不等式约束函数是否凸
+    \item 等式约束是否仿射
+\end{itemize}
+
+\textbf{重要说明}：有时问题的原始形式不明显是凸的，但通过重新表述可转换为标准凸形式。
+
+\textbf{转换的栗子：}
+考虑问题：
+\[
+\begin{aligned}
+\text{minimize} \quad & x_1^2 + x_2^2 \\
+\text{subject to} \quad & \frac{x_1}{1+x_2^2} \leq 0 \\
+& (x_1+x_2)^2 = 0
+\end{aligned}
+\]
+可行集 $\{x \mid x_1 \leq 0, x_1+x_2 = 0\}$ 是凸的，但原始问题不是标准凸优化形式（因为等式约束非仿射，不等式约束非凸）。可重新表述为：
+\[
+\begin{aligned}
+\text{minimize} \quad & x_1^2 + x_2^2 \\
+\text{subject to} \quad & x_1 \leq 0 \\
+& x_1 + x_2 = 0
+\end{aligned}
+\]
+这是标准凸优化形式，因为 $f_0$ 和 $f_1$ 是凸的，$h_1$ 是仿射的。
+
+\subsection{拟凸优化问题}
+
+拟凸优化问题具有标准形式：
+\[
+\begin{aligned}
+\text{minimize} \quad & f_0(x) \\
+\text{subject to} \quad & f_i(x) \leq 0, \quad i = 1, \dots, m \\
+& a_i^T x = b_i, \quad i = 1, \dots, p
+\end{aligned}
+\]
+其中 $f_0$ 是拟凸函数，$f_i$ ($i=1,\dots,m$) 是凸函数，等式约束是仿射的。
+
+拟凸优化问题中，局部最优解不一定是最优解。但可以使用二分法求解：
+\begin{itemize}
+    \item 假设已知最优值 $p^*$ 位于区间 $[l,u]$
+    \item 在每一步，取中点 $t = (l+u)/2$，求解凸可行性问题：
+    \[
+    \begin{aligned}
+    \text{find} \quad & x \\
+    \text{subject to} \quad & f_0(x) \leq t \\
+    & f_i(x) \leq 0, \quad i = 1, \dots, m \\
+    & a_i^T x = b_i, \quad i = 1, \dots, p
+    \end{aligned}
+    \]
+    \item 如果可行，则 $p^* \leq t$，令 $u = t$；否则 $p^* > t$，令 $l = t$
+    \item 重复此过程直到区间长度小于给定容差
+\end{itemize}
+
+\subsection{保持凸性的等效问题转换}
+这里的转换可以很大程度上参考上一节普通优化问题的转化，只需要确保转化后的目标函数、约束条件以及定义域等都满足凸优化的要求即可，以下列出几个稍有难度的转化方式（例如最大化问题如果仅有目标函数是凹的，其余条件都满足凸优化问题的要求，那么只需取反即可将其转换为凸优化问题）
+
+\textbf{变量替换}
+
+设 $\phi: \mathbb{R}^n \to \mathbb{R}^n$ 是一一映射且覆盖问题域 $D$，定义变量替换后的目标函数和约束函数为
+\[
+\begin{aligned}
+\tilde{f}_i(z) &= f_i(\phi(z)), \quad i = 0,1,\dots,m \\
+\tilde{h}_i(z) &= h_i(\phi(z)), \quad i = 1,2,\dots,p
+\end{aligned}
+\]
+若 $\tilde{f}_i$ 是凸函数，则变换后的问题仍是凸优化问题。变换后的问题与原问题等价：若 $x^*$ 解决原问题，则 $z^* = \phi^{-1}(x^*)$ 解决变换后问题；反之亦然。
+
+\textbf{目标函数和约束函数的变换}
+
+设 $\psi_0: \mathbb{R} \to \mathbb{R}$ 是单调递增的凸函数，$\psi_1,\dots,\psi_m: \mathbb{R} \to \mathbb{R}$ 满足 $\psi_i(u) \leq 0$ 当且仅当 $u \leq 0$ 且 $\psi_i$ 非减。定义变换后的函数：
+\[
+\begin{aligned}
+\tilde{f}_i(x) &= \psi_i(f_i(x)), \quad i = 0,1,\dots,m \\
+\tilde{h}_i(x) &= \psi_{m+i}(h_i(x)), \quad i = 1,2,\dots,p
+\end{aligned}
+\]
+若 $f_0$ 是凸的，则 $\tilde{f}_0$ 是凸的；若 $f_i$ 是凸的，则 $\tilde{f}_i$ 是凸的。变换后的凸优化问题与原问题等价。
+
+\textbf{引松弛变量}
+
+对于不等式约束 $f_i(x) \leq 0$，引入松弛变量 $s_i \geq 0$，将不等式转换为等式约束：
+\[
+f_i(x) + s_i = 0, \quad s_i \geq 0
+\]
+变换后的凸优化问题与原问题等价。
+
+\textbf{图像形式（Epigraph Form）}
+
+将原问题转换为：
+\[
+\begin{aligned}
+\text{minimize} \quad & t \\
+\text{subject to} \quad & f_0(x) - t \leq 0 \\
+& f_i(x) \leq 0, \quad i = 1, \dots, m \\
+& a_i^T x = b_i, \quad i = 1, \dots, p
+\end{aligned}
+\]
+若 $f_0$ 是凸的，则图像形式问题仍是凸优化问题。此问题与原问题等价：$(x^*,t^*)$ 是最优解当且仅当 $x^*$ 是原问题的最优解且 $t^* = f_0(x^*)$。
+
+\textbf{部分极小化}
+
+若 $f_0(x_1,x_2)$ 关于 $x_1,x_2$ 联合凸，且所有约束凸，则通过部分极小化得到的等价问题
+\[
+\begin{aligned}
+\text{minimize} \quad & \tilde{f}_0(x_1) = \inf\{f_0(x_1,z) \mid \tilde{f}_i(z) \leq 0, i=1,\dots,m_2\} \\
+\text{subject to} \quad & f_i(x_1) \leq 0, \quad i = 1, \dots, m_1
+\end{aligned}
+\]
+仍是凸优化问题。这表明在凸函数上对部分变量进行极小化仍保持凸性。
+
+\subsection{抽象凸优化问题}
+
+有些作者用"抽象凸优化问题"指代在凸集上最小化凸函数的问题。但本书要求可行集必须由凸不等式和线性等式具体描述。
+
+可以将约束隐含在目标函数中（通过扩展值延伸函数）：
+\[
+F(x) = \begin{cases}
+f_0(x), & \text{当} \; x \text{可行} \\
+\infty, & \text{当} \; x \text{不可行}
+\end{cases}
+\]
+则问题可表示为无约束问题：$\min F(x)$。此转换保持问题等价性，但只是符号上的技巧，未使问题更容易解决。
+
+凸优化问题的这些性质使其成为一类特别重要的优化问题，不仅因为许多实际问题可以表示为凸优化问题，还因为它们具有良好的理论性质且可以高效求解。这些理论基础为后续章节讨论的具体凸优化问题类型（如线性规划、二次规划等）奠定了基础。
+
+\section{线性优化问题}
+
+线性优化问题（也称为线性规划，Linear Programming，简称LP）是凸优化问题中最基本且应用最广泛的一类。本节将详细介绍线性规划的标准形式、几何解释、特殊形式、问题转换方法以及典型应用。
+
+\subsection{线性规划的标准形式}
+
+线性规划问题的标准形式定义为：
+
+$$
+\begin{aligned}
+\text{minimize} \quad & c^T x + d \\
+\text{subject to} \quad & Gx \preceq h \\
+& Ax = b
+\end{aligned}
+$$
+
+其中：
+- $x \in \mathbb{R}^n$ 是优化变量
+- $c \in \mathbb{R}^n$ 和 $d \in \mathbb{R}$ 定义了线性目标函数
+- $G \in \mathbb{R}^{m \times n}$ 和 $h \in \mathbb{R}^m$ 定义了不等式约束
+- $A \in \mathbb{R}^{p \times n}$ 和 $b \in \mathbb{R}^p$ 定义了等式约束
+
+线性规划是凸优化问题的一个特例，因为：
+1. 目标函数 $c^T x + d$ 是仿射函数，因此也是凸函数
+2. 不等式约束函数 $g_i(x) = (Gx)_i - h_i$ 是仿射函数，因此也是凸函数
+3. 等式约束是仿射的
+
+线性规划问题的可行集 $\{x \mid Gx \preceq h, Ax = b\}$ 是一个多面体（polyhedron），这是一个凸集。线性规划问题的最优解（如果存在）通常出现在可行集的边界上，特别是多面体的顶点处。
+
+\subsection{线性规划的几何解释}
+
+线性规划问题的几何解释非常直观。考虑目标函数 $c^T x$，其等值面是垂直于向量 $c$ 的超平面。最小化 $c^T x$ 相当于在可行集内沿着 $-c$ 方向尽可能远地移动，直到碰到可行集的边界。
+
+在二维或三维空间中，可行集是一个多边形或多面体，目标函数的等值线（或等值面）是一系列平行线（或平行平面）。最优解出现在等值线（或等值面）与可行集首次接触的点上，这个点通常位于可行集的顶点或边界上。
+
+例如，考虑一个简单的二维线性规划问题：
+
+$$
+\begin{aligned}
+\text{minimize} \quad & -x_1 - x_2 \\
+\text{subject to} \quad & x_1 + 2x_2 \leq 4 \\
+& 2x_1 + x_2 \leq 4 \\
+& x_1 \geq 0, x_2 \geq 0
+\end{aligned}
+$$
+
+可行集是一个四边形，目标函数的等值线是斜率为-1的直线。最小化 $-x_1 - x_2$ 等价于最大化 $x_1 + x_2$，最优解出现在可行集的顶点 $(4/3, 4/3)$ 处。
+
+\subsection{线性规划的特殊形式}
+
+线性规划问题有两种特别常见的形式：
+
+1. \textbf{标准形式线性规划}：只有非负约束
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & c^T x \\
+   \text{subject to} \quad & Ax = b \\
+   & x \succeq 0
+   \end{aligned}
+   $$
+   其中 $x \in \mathbb{R}^n$，$A \in \mathbb{R}^{m \times n}$，$b \in \mathbb{R}^m$，且通常假设 $m \leq n$ 且 $A$ 的行是线性独立的。
+
+2. \textbf{不等式形式线性规划}：只有不等式约束
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & c^T x \\
+   \text{subject to} \quad & Ax \preceq b
+   \end{aligned}
+   $$
+
+标准形式线性规划在理论分析和算法设计中特别有用，因为它的结构更简单，且可以应用单纯形法等经典算法。
+
+\subsection{一般线性规划转换为标准形式}
+
+任何线性规划问题都可以转换为标准形式。转换过程包括以下步骤：
+
+1. \textbf{处理不等式约束}：对于每个不等式约束 $a_i^T x \leq b_i$，引入松弛变量 $s_i \geq 0$，将不等式转换为等式：
+   $$
+   a_i^T x + s_i = b_i, \quad s_i \geq 0
+   $$
+   例如，约束 $x_1 + 2x_2 \leq 4$ 可以转换为 $x_1 + 2x_2 + s_1 = 4$，其中 $s_1 \geq 0$。
+
+2. \textbf{处理自由变量}：对于每个自由变量（无约束的变量）$x_j$，将其表示为两个非负变量的差：
+   $$
+   x_j = x_j^+ - x_j^-, \quad x_j^+ \geq 0, \quad x_j^- \geq 0
+   $$
+   例如，如果 $x_1$ 是自由变量，则替换为 $x_1 = x_1^+ - x_1^-$，其中 $x_1^+ \geq 0$，$x_1^- \geq 0$。
+
+3. \textbf{处理大于等于约束}：对于每个约束 $a_i^T x \geq b_i$，乘以-1转换为小于等于约束：
+   $$
+   -a_i^T x \leq -b_i
+   $$
+
+4. \textbf{处理等式右侧为负}：如果等式约束 $a_i^T x = b_i$ 中 $b_i < 0$，可以乘以-1使右侧非负。
+
+5. \textbf{合并变量}：将所有新引入的变量与原变量合并，形成新的变量向量。
+
+例如，考虑一般线性规划问题：
+$$
+\begin{aligned}
+\text{minimize} \quad & c^T x + d \\
+\text{subject to} \quad & Gx \preceq h \\
+& Ax = b
+\end{aligned}
+$$
+
+转换为标准形式的步骤如下：
+
+首先，引入松弛变量 $s$ 处理不等式约束：
+$$
+\begin{aligned}
+\text{minimize} \quad & c^T x + d \\
+\text{subject to} \quad & Gx + s = h \\
+& Ax = b \\
+& s \succeq 0
+\end{aligned}
+$$
+
+然后，将变量 $x$ 表示为两个非负变量的差：$x = x^+ - x^-$，其中 $x^+ \succeq 0$，$x^- \succeq 0$：
+$$
+\begin{aligned}
+\text{minimize} \quad & c^T x^+ - c^T x^- + d \\
+\text{subject to} \quad & Gx^+ - Gx^- + s = h \\
+& Ax^+ - Ax^- = b \\
+& x^+ \succeq 0, \quad x^- \succeq 0, \quad s \succeq 0
+\end{aligned}
+$$
+
+现在，问题已经转换为标准形式，变量为 $[x^{+T}, x^{-T}, s^T]^T$。
+
+\subsection{线性规划的应用实例}
+
+线性规划在许多领域有广泛应用，下面介绍几个典型例子：
+
+1. \textbf{饮食问题（Diet Problem）}：选择食物的量以满足营养需求并最小化成本。
+   - 设 $x_j$ 表示食物 $j$ 的数量（$x_j \geq 0$）
+   - $c_j$ 表示食物 $j$ 的单位成本
+   - $A_{ij}$ 表示食物 $j$ 中营养素 $i$ 的含量
+   - $b_i$ 表示营养素 $i$ 的最低需求
+   
+   问题可以表述为：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & c^T x \\
+   \text{subject to} \quad & Ax \succeq b \\
+   & x \succeq 0
+   \end{aligned}
+   $$
+   
+   这是一个不等式形式的线性规划，可以通过引入松弛变量转换为标准形式。
+
+2. \textbf{网络流问题}：优化网络中的流量以最小化总成本。
+   - 设 $x_j$ 表示弧 $j$ 上的流量
+   - $c_j$ 表示单位流量在弧 $j$ 上的成本
+   - 约束包括流量守恒（每个节点流入等于流出）和容量限制
+   
+   问题可以表述为：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & c^T x \\
+   \text{subject to} \quad & Ax = b \\
+   & 0 \preceq x \preceq u
+   \end{aligned}
+   $$
+   
+   其中 $A$ 是网络的关联矩阵，$b$ 表示源点和汇点的净流量，$u$ 是容量限制。
+
+3. \textbf{资源分配问题}：在有限资源下最大化收益。
+   - 设 $x_j$ 表示项目 $j$ 的投入量
+   - $c_j$ 表示项目 $j$ 的单位收益
+   - $A_{ij}$ 表示项目 $j$ 消耗资源 $i$ 的数量
+   - $b_i$ 表示资源 $i$ 的总量
+   
+   问题可以表述为：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & -c^T x \\
+   \text{subject to} \quad & Ax \preceq b \\
+   & x \succeq 0
+   \end{aligned}
+   $$
+   
+   这里最小化 $-c^T x$ 等价于最大化 $c^T x$。
+
+\subsection{分段线性最小化转换为线性规划}
+
+分段线性函数是指由多个线性函数段组成的凸函数。最小化分段线性函数可以转换为线性规划问题。
+
+考虑分段线性最小化问题：
+$$
+\text{minimize} \quad \max_{i=1,\dots,m} (a_i^T x + b_i)
+$$
+
+通过引入辅助变量 $t$，可以将问题转换为线性规划：
+$$
+\begin{aligned}
+\text{minimize} \quad & t \\
+\text{subject to} \quad & a_i^T x + b_i \leq t, \quad i = 1, \dots, m
+\end{aligned}
+$$
+
+这个转换的原理是：$\max_{i=1,\dots,m} (a_i^T x + b_i) \leq t$ 当且仅当对所有 $i$，$a_i^T x + b_i \leq t$。因此，最小化 $t$ 等价于最小化分段线性函数。
+
+例如，最小化 $|x_1| + |x_2|$ 可以转换为：
+$$
+\begin{aligned}
+\text{minimize} \quad & t_1 + t_2 \\
+\text{subject to} \quad & -t_1 \leq x_1 \leq t_1 \\
+& -t_2 \leq x_2 \leq t_2
+\end{aligned}
+$$
+
+这里 $t_1$ 和 $t_2$ 分别是 $|x_1|$ 和 $|x_2|$ 的上界。
+
+\subsection{线性分式规划}
+
+线性分式规划是目标函数为线性分式函数的优化问题：
+$$
+\begin{aligned}
+\text{minimize} \quad & \frac{c^T x + d}{e^T x + f} \\
+\text{subject to} \quad & e^T x + f > 0 \\
+& Gx \preceq h \\
+& Ax = b
+\end{aligned}
+$$
+
+通过变量替换 $y = x/(e^T x + f)$ 和 $t = 1/(e^T x + f)$，可以将线性分式规划转换为线性规划：
+$$
+\begin{aligned}
+\text{minimize} \quad & c^T y + dt \\
+\text{subject to} \quad & Gy - ht \preceq 0 \\
+& Ay - bt = 0 \\
+& e^T y + ft = 1 \\
+& t \geq 0
+\end{aligned}
+$$
+
+如果 $(y^*, t^*)$ 是转换后问题的最优解，那么 $x^* = y^*/t^*$ 是原问题的最优解。
+
+例如，考虑线性分式规划问题：
+$$
+\begin{aligned}
+\text{minimize} \quad & \frac{x_1 + 2}{x_1 + x_2 + 1} \\
+\text{subject to} \quad & x_1 + x_2 + 1 > 0 \\
+& x_1 \geq 0, x_2 \geq 0 \\
+& x_1 + x_2 \leq 1
+\end{aligned}
+$$
+
+通过变量替换 $y_1 = x_1/t$，$y_2 = x_2/t$，$t = 1/(x_1 + x_2 + 1)$，转换为：
+$$
+\begin{aligned}
+\text{minimize} \quad & y_1 + 2t \\
+\text{subject to} \quad & y_1 + y_2 + t = 1 \\
+& y_1 \geq 0, y_2 \geq 0 \\
+& y_1 + y_2 \leq t \\
+& t \geq 0
+\end{aligned}
+$$
+
+\subsection{线性规划的求解方法和特点}
+
+线性规划问题有多种求解方法，包括：
+
+1. \textbf{单纯形法}：从一个顶点开始，沿着可行集的边移动到相邻的顶点，直到找到最优解。虽然在最坏情况下可能需要指数时间，但在实践中通常非常高效。
+
+2. \textbf{内点法}：从可行集内部开始，沿着特定路径向最优解移动。内点法具有多项式时间复杂度，在大规模问题上通常比单纯形法更有效。
+
+线性规划问题具有以下特点：
+
+- 如果可行集非空且有界，则最优解一定存在
+- 如果可行集非空但无界，最优值可能为 $-\infty$
+- 最优解（如果存在）通常出现在可行集的顶点上
+- 如果存在多个最优解，则最优解集合是一个多面体
+
+在实际应用中，线性规划问题通常通过专门的软件包（如CPLEX、Gurobi等）求解。这些软件包实现了高效的算法，并提供了用户友好的接口。
+
+\subsection{线性规划与其他优化问题的关系}
+
+线性规划与其他优化问题有密切关系：
+
+1. \textbf{二次规划}：如果目标函数是二次凸函数，约束是线性的，则得到二次规划问题，这是线性规划的推广。
+
+2. \textbf{半定规划}：如果约束是线性矩阵不等式，则得到半定规划问题，这也是线性规划的推广。
+
+3. \textbf{整数线性规划}：如果变量需要取整数值，则得到整数线性规划问题，这是一个NP难问题，但可以通过线性规划松弛来近似求解。
+
+线性规划作为最简单的凸优化问题，为理解和求解更复杂的优化问题提供了基础。许多非线性优化问题可以通过线性化或近似转换为线性规划问题，从而利用线性规划的高效算法求解。
+
+总之，线性规划是凸优化理论和应用的核心内容之一。通过理解线性规划的标准形式、几何解释、转换方法和应用实例，我们可以更好地掌握凸优化的基本原理，并将其应用于各种实际问题中。
+
+\section{几何优化问题}
+
+几何优化问题（Geometric Programming，简称GP）是一类特殊的优化问题，其特点是在原始形式下不是凸的，但可以通过变量替换和函数变换转化为凸优化问题。几何规划在工程设计、资源分配、电路设计等领域有广泛应用。
+
+\subsection{单项式与正项式}
+
+几何规划的基础是单项式（monomial）和正项式（posynomial）的概念。
+
+\textbf{单项式}：函数 $f: \mathbb{R}^n \to \mathbb{R}$，定义域为 $\mathbb{R}_{++}^n$（正实数空间），形式为：
+$$
+f(x) = c x_1^{a_1} x_2^{a_2} \cdots x_n^{a_n}
+$$
+其中 $c > 0$ 且 $a_i \in \mathbb{R}$。单项式具有以下性质：
+- 单项式是正函数（值域为正实数）
+- 两个单项式的乘积仍是单项式
+- 单项式与正标量的乘积仍是单项式
+- 单项式的幂（指数为实数）仍是单项式
+
+\textbf{正项式}：正项式是单项式的和，形式为：
+$$
+f(x) = \sum_{k=1}^K c_k x_1^{a_{1k}} x_2^{a_{2k}} \cdots x_n^{a_{nk}}
+$$
+其中 $c_k > 0$。正项式具有以下性质：
+- 正项式是正函数
+- 两个正项式的和仍是正项式
+- 两个正项式的乘积仍是正项式
+- 正项式与正标量的乘积仍是正项式
+- 正项式的幂（指数为正实数）仍是正项式
+
+注意：两个正项式的差不一定是正项式，正项式的倒数也不一定是正项式。
+
+\subsection{几何规划的标准形式}
+
+几何规划的标准形式定义为：
+$$
+\begin{aligned}
+\text{minimize} \quad & f_0(x) \\
+\text{subject to} \quad & f_i(x) \leq 1, \quad i = 1, \dots, m \\
+& g_i(x) = 1, \quad i = 1, \dots, p
+\end{aligned}
+$$
+其中：
+- $x \in \mathbb{R}_{++}^n$ 是优化变量（所有分量为正）
+- $f_0, f_1, \dots, f_m$ 是正项式
+- $g_1, \dots, g_p$ 是单项式
+
+标准几何规划问题在原始形式下不是凸优化问题，因为：
+1. 目标函数和约束函数不是凸函数
+2. 可行集不是凸集
+
+然而，通过适当的变量替换和函数变换，可以将几何规划问题转化为凸优化问题。
+
+\subsection{几何规划的凸形式转换}
+
+将几何规划转换为凸优化问题的关键步骤是：
+
+1. \textbf{变量替换}：令 $y_i = \log x_i$，即 $x_i = e^{y_i}$，其中 $y_i \in \mathbb{R}$。这一替换将变量从正实数空间 $\mathbb{R}_{++}^n$ 映射到整个实数空间 $\mathbb{R}^n$。
+
+2. \textbf{函数变换}：考虑一个单项式 $f(x) = c x_1^{a_1} \cdots x_n^{a_n}$，经过变量替换后：
+   $$
+   \tilde{f}(y) = f(e^y) = c e^{a_1 y_1 + \cdots + a_n y_n} = e^{\log c + a^T y}
+   $$
+   取对数后得到：
+   $$
+   \log \tilde{f}(y) = a^T y + b
+   $$
+   其中 $b = \log c$。这是一个仿射函数，因此是凸函数。
+
+3. 对于正项式 $f(x) = \sum_{k=1}^K c_k x_1^{a_{1k}} \cdots x_n^{a_{nk}}$，经过变量替换和对数变换后：
+   $$
+   \log \tilde{f}(y) = \log \left( \sum_{k=1}^K e^{a_k^T y + b_k} \right)
+   $$
+   其中 $a_k = (a_{1k}, \dots, a_{nk})^T$，$b_k = \log c_k$。这是一个凸函数，因为：
+   - $e^{a_k^T y + b_k}$ 是凸函数（指数仿射函数）
+   - 凸函数的和是凸函数
+   - $\log$ 是单调递增的凸函数，且其定义域为正实数
+   - $\log(\text{凸函数})$ 在适当条件下是凸函数
+
+通过上述变换，几何规划问题可以转换为凸优化问题：
+$$
+\begin{aligned}
+\text{minimize} \quad & \log \left( \sum_{k=1}^{K_0} e^{a_{0k}^T y + b_{0k}} \right) \\
+\text{subject to} \quad & \log \left( \sum_{k=1}^{K_i} e^{a_{ik}^T y + b_{ik}} \right) \leq 0, \quad i = 1, \dots, m \\
+& c_i^T y + d_i = 0, \quad i = 1, \dots, p
+\end{aligned}
+$$
+其中：
+- $a_{ik} \in \mathbb{R}^n$ 和 $b_{ik} \in \mathbb{R}$ 由原始正项式的系数和指数确定
+- $c_i \in \mathbb{R}^n$ 和 $d_i \in \mathbb{R}$ 由原始单项式约束确定
+
+转换后的优化问题目标函数和不等式约束函数都是凸函数，等式约束是仿射的，因此是一个标准的凸优化问题。
+
+\subsection{几何规划的应用实例}
+
+几何规划在许多领域有广泛应用，下面介绍几个典型例子：
+
+1. \textbf{电路设计}：在集成电路设计中，需要优化晶体管尺寸以最小化功耗或面积，同时满足性能约束。
+   - 设 $x_j$ 表示晶体管 $j$ 的尺寸（宽度）
+   - 功耗通常可以表示为正项式函数
+   - 延迟约束通常可以表示为正项式不等式
+   - 面积约束可以表示为单项式等式
+
+   例如，最小化功耗问题：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & \text{功耗}(x) \\
+   \text{subject to} \quad & \text{延迟}(x) \leq 1 \\
+   & \text{面积}(x) = 1 \\
+   & x \succ 0
+   \end{aligned}
+   $$
+   其中功耗和延迟是正项式，面积是单项式。
+
+2. \textbf{机械设计}：优化机械结构的尺寸以最小化重量或成本。
+   - 考虑一个简单的梁设计问题，需要确定梁的宽度 $w$ 和高度 $h$
+   - 重量与 $wh$ 成正比（单项式）
+   - 弯曲应力与 $M/(wh^2)$ 成正比，其中 $M$ 是弯矩
+   - 挠度与 $ML^3/(wh^3)$ 成正比，其中 $L$ 是梁长
+
+   问题可以表述为：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & wh \\
+   \text{subject to} \quad & \frac{M}{wh^2} \leq \sigma_{\text{max}} \\
+   & \frac{ML^3}{wh^3} \leq \delta_{\text{max}} \\
+   & w, h > 0
+   \end{aligned}
+   $$
+   通过除以右侧常数，可以转换为几何规划标准形式。
+
+3. \textbf{无线通信中的功率控制}：在无线网络中优化发射功率以最小化总功耗，同时满足信干噪比(SINR)要求。
+   - 设 $x_j$ 表示用户 $j$ 的发射功率
+   - 信干噪比可以表示为正项式比值
+   - 通过适当变换，SINR约束可以表示为正项式不等式
+
+   问题可以表述为：
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & \sum_{j=1}^n x_j \\
+   \text{subject to} \quad & \frac{G_{jj}x_j}{\sum_{k \neq j} G_{jk}x_k + \sigma_j} \geq \gamma_j, \quad j = 1, \dots, n \\
+   & x_j > 0, \quad j = 1, \dots, n
+   \end{aligned}
+   $$
+   其中 $G_{jk}$ 是信道增益，$\sigma_j$ 是噪声功率，$\gamma_j$ 是SINR要求。通过重新排列不等式，可以转换为几何规划标准形式。
+
+4. \textbf{热力学系统设计}：优化热交换器的尺寸和操作条件。
+   - 传热面积、流速、温度等变量
+   - 能量平衡方程通常可以表示为单项式等式
+   - 成本函数通常可以表示为正项式
+
+\subsection{广义几何规划}
+
+广义几何规划是标准几何规划的扩展，允许更复杂的约束形式。广义几何规划可以表示为：
+$$
+\begin{aligned}
+\text{minimize} \quad & f_0(x) \\
+\text{subject to} \quad & f_i(x) \leq 1, \quad i = 1, \dots, m \\
+& g_i(x) = 1, \quad i = 1, \dots, p
+\end{aligned}
+$$
+其中 $f_i$ 是广义正项式，$g_i$ 是广义单项式。
+
+\textbf{广义单项式}：函数 $g(x)$ 称为广义单项式，如果它可以表示为：
+$$
+g(x) = c x_1^{a_1} \cdots x_n^{a_n} \prod_{j=1}^m f_j(x)^{b_j}
+$$
+其中 $c > 0$，$a_i \in \mathbb{R}$，$b_j \in \mathbb{R}$，且 $f_j$ 是正项式。
+
+\textbf{广义正项式}：广义正项式是广义单项式的和。
+
+广义几何规划也可以通过类似的变量替换和对数变换转换为凸优化问题，但转换过程可能更复杂。
+
+\subsection{几何规划的求解方法}
+
+几何规划的求解通常包括以下步骤：
+
+1. \textbf{问题转换}：将原始几何规划问题转换为凸形式
+   - 执行变量替换 $y_i = \log x_i$
+   - 对目标函数和约束函数应用对数变换
+   - 验证转换后的函数是凸的
+
+2. \textbf{凸优化求解}：使用凸优化算法求解转换后的问题
+   - 内点法是求解转换后凸问题的常用方法
+   - 可以利用转换后问题的特殊结构设计更高效的算法
+
+3. \textbf{解的恢复}：将凸问题的解转换回原始变量空间
+   - 计算 $x_i^* = e^{y_i^*}$，其中 $y^*$ 是凸问题的最优解
+
+几何规划问题的求解效率通常很高，特别是当问题规模不大时。对于大规模几何规划问题，可能需要使用专门设计的算法。
+
+\subsection{几何规划与其他优化问题的关系}
+
+几何规划与以下优化问题有密切关系：
+
+1. \textbf{线性规划}：几何规划可以看作是线性规划在对数空间中的推广。事实上，当所有指数 $a_{ij}$ 为零或一，且所有单项式约束退化为线性约束时，几何规划退化为线性规划。
+
+2. \textbf{对数障碍法}：在凸优化中，对数障碍法使用类似几何规划转换中的对数和指数函数来处理不等式约束。
+
+3. \textbf{熵最大化}：某些熵最大化问题可以表示为几何规划问题，特别是当目标函数是熵函数且约束是线性时。
+
+4. \textbf{多项式优化}：几何规划可以看作是多项式优化的一个特例，其中变量限制为正，且系数为正。
+
+\subsection{几何规划的扩展与变体}
+
+1. \textbf{分式几何规划}：目标函数或约束为正项式比值的优化问题
+   $$
+   \begin{aligned}
+   \text{minimize} \quad & \frac{f_0(x)}{g_0(x)} \\
+   \text{subject to} \quad & \frac{f_i(x)}{g_i(x)} \leq 1, \quad i = 1, \dots, m \\
+   & h_i(x) = 1, \quad i = 1, \dots, p
+   \end{aligned}
+   $$
+   其中 $f_i$ 和 $g_i$ 是正项式，$h_i$ 是单项式。这类问题也可以转换为凸优化问题。
+
+2. \textbf{条件几何规划}：包含逻辑约束的几何规划问题，例如"如果 $f_1(x) \leq 1$，则 $f_2(x) \leq 1$"。这类问题通常是非凸的，但可以通过引入二元变量转换为混合整数几何规划。
+
+3. \textbf{随机几何规划}：参数包含不确定性的几何规划问题，可以通过鲁棒优化或随机规划方法处理。
+
+\subsection{几何规划的局限性}
+
+尽管几何规划有广泛应用，但它也有一些局限性：
+
+1. \textbf{变量必须为正}：几何规划要求所有变量为正，这在某些应用中可能是一个限制。
+
+2. \textbf{系数必须为正}：正项式要求所有系数为正，这限制了可以表示的问题类型。
+
+3. \textbf{不能直接处理负项}：两个正项式的差不能直接表示为正项式，需要特殊处理。
+
+4. \textbf{非凸约束的表示困难}：某些自然的约束可能难以表示为正项式不等式或单项式等式。
+
+为了克服这些局限性，研究者提出了各种扩展和变体，如广义几何规划、符号几何规划等。
+
+\subsection{几何规划在现代优化中的地位}
+
+几何规划在现代优化理论和应用中占有重要地位：
+
+1. \textbf{凸优化的桥梁}：几何规划展示了如何将一类非凸问题转换为凸问题，这为处理其他非凸问题提供了思路。
+
+2. \textbf{工程应用的实用性}：在许多工程领域，设计问题自然地表示为几何规划形式，使得几何规划成为连接理论与实践的桥梁。
+
+3. \textbf{优化建模语言的支持}：现代优化建模语言（如CVXPY、CVX）通常内置对几何规划的支持，允许用户以自然形式表述问题，自动进行转换和求解。
+
+4. \textbf{与其他优化方法的结合}：几何规划经常与其他优化方法（如整数规划、随机规划）结合，解决更复杂的问题。
+
+总之，几何规划作为一类特殊的优化问题，通过巧妙的变量替换和函数变换，将非凸问题转化为凸问题，使得许多实际工程设计问题可以高效求解。理解几何规划的原理和应用，对于掌握凸优化理论和解决实际问题都具有重要意义。
+
 \chapter{对偶性}
 
 \part{应用}
